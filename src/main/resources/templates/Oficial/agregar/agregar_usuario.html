@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema Militar - Registrar Usuario</title>
+    <link rel="stylesheet" th:href="@{/css/Home.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar_militar}"></header>
+
+<main class="dashboard-container" style="display: flex; justify-content: center; padding: 40px;">
+    <div class="profile-card" style="max-width: 500px; width: 100%; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+
+        <div class="profile-header" style="background-color: #2c3e50; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h2 style="margin: 0;"><i data-lucide="user-plus"></i> Registrar Personal</h2>
+        </div>
+
+        <div class="profile-body" style="padding: 30px;">
+            <form th:action="@{${targetAction}}" th:object="${usuarioDto}" method="post">
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; margin-bottom:5px;">Nombre:</label>
+                    <input type="text" th:field="*{nombre}" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; margin-bottom:5px;">Apellido:</label>
+                    <input type="text" th:field="*{apellido}" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; margin-bottom:5px;">Email:</label>
+                    <input type="email" th:field="*{email}" required style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; margin-bottom:5px;">Rango / Tipo:</label>
+                    <select th:field="*{tipoUsuario}" required class="input-militar">
+
+                        <option value="SOLDADO">Soldado</option>
+
+                        <th:block sec:authorize="hasRole('OFICIAL')">
+                            <option value="SUBOFICIAL">Suboficial</option>
+                            <option value="OFICIAL">Oficial</option>
+                        </th:block>
+
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" style="flex:1; background:#27ae60; color:white; border:none; padding:10px; border-radius:4px; cursor:pointer; font-weight:bold;">
+                        Guardar Usuario
+                    </button>
+                    <a th:href="@{/api/oficial/consultar/usuario}" style="flex:1; text-align:center; background:#edf2f7; color:#4a5568; padding:10px; border-radius:4px; text-decoration:none;">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

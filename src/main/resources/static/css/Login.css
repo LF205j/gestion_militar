@@ -1,0 +1,240 @@
+/* =========================
+   RESET BÁSICO
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1b2d1b, #0f1a0f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e0e0e0;
+}
+
+/* =========================
+   CONTENEDOR GENERAL
+========================= */
+.login-container {
+    width: 90%;
+    max-width: 1100px;
+    height: 600px;
+    display: flex;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+    background-color: #1a1a1a;
+}
+
+/* =========================
+   LADO BRANDING
+========================= */
+.branding-side {
+    width: 50%;
+    background:
+        linear-gradient(
+            rgba(18, 32, 18, 0.9),
+            rgba(18, 32, 18, 0.9)
+        ),
+        url("https://images.unsplash.com/photo-1508264165352-258a6a52a6c9");
+    background-size: cover;
+    background-position: center;
+    padding: 60px;
+    display: flex;
+    align-items: center;
+}
+
+/* =========================
+   CONTENIDO BRANDING
+========================= */
+.branding-content {
+    max-width: 420px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.logo-icon {
+    width: 52px;
+    height: 52px;
+    background-color: #556b2f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 24px;
+    color: #fff;
+}
+
+.branding-content h1 {
+    font-size: 28px;
+    color: #d4af37;
+    letter-spacing: 1px;
+}
+
+.branding-content h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #c9d1c9;
+}
+
+.branding-content p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #b7c2b7;
+}
+
+/* =========================
+   LADO FORMULARIO
+========================= */
+.form-side {
+    width: 50%;
+    background-color: #121212;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =========================
+   TARJETA LOGIN
+========================= */
+.login-card {
+    width: 100%;
+    max-width: 360px;
+}
+
+.login-card h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #d4af37;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: #9fa89f;
+    margin-bottom: 30px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    font-size: 13px;
+    margin-bottom: 6px;
+    display: block;
+    color: #b7c2b7;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: #1e1e1e;
+    border: 1px solid #2e3d2e;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.input-wrapper i {
+    color: #6b8e23;
+    margin-right: 10px;
+}
+
+.input-wrapper input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 100%;
+    font-size: 14px;
+}
+
+.input-wrapper input::placeholder {
+    color: #777;
+}
+
+/* =========================
+   OPCIONES FORMULARIO
+========================= */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    margin-bottom: 25px;
+}
+
+.form-options a {
+    color: #9acd32;
+    text-decoration: none;
+}
+
+.form-options a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   BOTÓN
+========================= */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #556b2f;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #6b8e23;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer-text {
+    margin-top: 25px;
+    font-size: 12px;
+    text-align: center;
+    color: #9fa89f;
+}
+
+.footer-text a {
+    color: #9acd32;
+    text-decoration: none;
+}
+
+.footer-text a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+    .login-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .branding-side

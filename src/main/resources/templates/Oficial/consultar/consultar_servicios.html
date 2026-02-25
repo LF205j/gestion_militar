@@ -1,0 +1,122 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Sistema Militar - Servicios</title>-->
+<!--    <link rel="stylesheet" th:href="@{/css/Home.css}">-->
+<!--    <link rel="stylesheet" th:href="@{/css/navbar.css}">-->
+<!--    <script src="https://unpkg.com/lucide@latest"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<header th:replace="~{fragments/navbar :: navbar_militar}"></header>-->
+
+<!--<main class="dashboard-container" style="padding: 20px; max-width: 1200px; margin: 0 auto;">-->
+
+<!--    <div class="profile-card">-->
+<!--        <div class="profile-header" style="background-color: #2c3e50; color: white; padding: 20px 30px; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">-->
+<!--            <div style="display: flex; align-items: center; gap: 15px;">-->
+<!--                <div class="profile-avatar" style="background: rgba(255,255,255,0.1); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">-->
+<!--                    <i data-lucide="clipboard-list"></i>-->
+<!--                </div>-->
+<!--                <h1 style="margin: 0; font-size: 1.5rem;">Listado de Servicios</h1>-->
+<!--            </div>-->
+<!--            <a th:href="@{/api/oficial/agregar/servicio}" style="background: #3498db; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 0.9rem; font-weight: 600;">-->
+<!--                + Nuevo Servicio-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--        <div class="profile-body" style="background: white; padding: 0; border: 1px solid #e1e4e8; border-top: none; border-radius: 0 0 8px 8px; overflow: hidden;">-->
+
+<!--            <div th:if="${#lists.isEmpty(servicios)}" style="padding: 40px; text-align: center; color: #7f8c8d;">-->
+<!--                <i data-lucide="search-x" style="width: 48px; height: 48px; margin-bottom: 10px; opacity: 0.5;"></i>-->
+<!--                <p>No se encontraron Servicios registrados.</p>-->
+<!--            </div>-->
+
+<!--            <table th:if="${not #lists.isEmpty(servicios)}" style="width: 100%; border-collapse: collapse; margin-bottom: 0;">-->
+<!--                <thead>-->
+<!--                <tr style="background-color: #f8f9fa; text-align: left; border-bottom: 2px solid #edf2f7;">-->
+<!--                    <th style="padding: 15px 25px; color: #4a5568; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">ID</th>-->
+<!--                    <th style="padding: 15px 25px; color: #4a5568; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">Nombre Servicio</th>-->
+<!--                    <th style="padding: 15px 25px; color: #4a5568; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">Descripción</th>-->
+<!--                    <th style="padding: 15px 25px; color: #4a5568; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; text-align: center;">Rango</th>-->
+<!--                    <th style="padding: 15px 25px; color: #4a5568; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; text-align: center;">Acciones</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr th:each="s : ${servicios}" style="border-bottom: 1px solid #edf2f7; transition: all 0.2s ease;"-->
+<!--                    onmouseover="this.style.backgroundColor='#f1f5f9'"-->
+<!--                    onmouseout="this.style.backgroundColor='transparent'">-->
+
+<!--                    <td th:text="${s.id}" style="padding: 15px 25px; color: #718096; font-family: monospace;">1</td>-->
+
+<!--                    <td th:text="${s.nombre_servicio}" style="padding: 15px 25px; color: #2d3748; font-weight: 500;">Nombre</td>-->
+
+<!--                    <td th:text="${s.descripcion_servicio}" style="padding: 15px 25px; color: #4a5568;">Descripción</td>-->
+
+<!--                    <td th:text="${s.rango}" style="padding: 15px 25px; color: #4a5568; text-align: center;">1</td>-->
+
+<!--                    <td style="padding: 15px 25px; text-align: center;">-->
+<!--                        <div style="display: flex; gap: 12px; justify-content: center;">-->
+<!--                            <a th:href="@{/api/oficial/editar/servicio/{id}(id=${s.id})}" style="color: #3182ce;" title="Editar">-->
+<!--                                <i data-lucide="edit-3" style="width: 18px;"></i>-->
+<!--                            </a>-->
+<!--                            <form th:action="@{/api/oficial/eliminar/servicio}" method="post" onsubmit="return confirm('¿Eliminar este servicio?')">-->
+<!--                                <input type="hidden" name="id" th:value="${s.id}">-->
+<!--                                <button type="submit" style="background: none; border: none; color: #e53e3e; cursor: pointer; padding: 0;">-->
+<!--                                    <i data-lucide="trash-2" style="width: 18px;"></i>-->
+<!--                                </button>-->
+<!--                            </form>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</main>-->
+<!--<script>-->
+<!--    lucide.createIcons();-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de Cuerpos - Gestión Militar</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/Home.css}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<header th:replace="fragments/navbar :: navbar_militar"></header>
+
+<div class="search-container">
+    <h2 class="search-title">Búsqueda por Identificador</h2>
+
+    <form th:action="@{/api/oficial/consultar/servicio}" th:object="${servicioDto}" method="post">
+        <div class="form-group-custom">
+            <label>Código ID del Servicio:</label>
+            <input type="number" th:field="*{id}" class="input-militar" placeholder="Ej: 101" required>
+        </div>
+        <button type="submit" class="btn-buscar-militar">Consultar Registro</button>
+    </form>
+
+    <div th:if="${servicio != null}" class="militar-result-card">
+        <h3>Ficha del Servicio Militar</h3>
+        <p><strong>Número de Registro:</strong> <span th:text="${servicio.id}"></span></p>
+        <p><strong>Nombre Servicio:</strong> <span th:text="${servicio.nombre_servicio}"></span></p>
+        <p><strong>Nombre Servicio:</strong> <span th:text="${servicio.descripcion_servicio}"></span></p>
+       <p><strong>Rango Servicio:</strong> <span th:text="${servicio.rango}"></span></p>
+    </div>
+
+    <div th:if="${error != null}" class="error-msg-militar">
+        <p th:text="${error}"></p>
+    </div>
+</div>
+<script>
+    lucide.createIcons();
+</script>
+</body>
+</html>

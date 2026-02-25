@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Asignación de Cuartel - Gestión Militar</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/Home.css}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Estilo extra para el mensaje de éxito/error */
+        .status-msg { padding: 10px; border-radius: 4px; margin-top: 15px; display: none; }
+        .success { background-color: #d4edda; color: #155724; display: block; }
+        .error { background-color: #f8d7da; color: #721c24; display: block; }
+    </style>
+</head>
+<body>
+<header th:replace="fragments/navbar :: navbar_militar"></header>
+
+<div class="search-container">
+    <h2 class="search-title">Asignación de Destino (Servicio)</h2>
+
+    <form th:action="@{${targetAction}}" th:object="${asignacionDto}" method="post">
+
+        <div class="form-group-custom">
+            <label>Código ID del Usuario:</label>
+            <input type="number" th:field="*{usuarioId}" class="input-militar" placeholder="Ej: 5" required>
+        </div>
+
+        <div class="form-group-custom">
+            <label>Código ID del Servicio Destino:</label>
+            <input type="number" th:field="*{idServicio}" class="input-militar" placeholder="Ej: 1" required>
+        </div>
+
+        <button type="submit" class="btn-buscar-militar">Confirmar Asignación</button>
+    </form>
+
+    <div th:if="${mensajeExito}" class="status-msg success" style="display: block;">
+        <p th:text="${mensajeExito}"></p>
+    </div>
+
+    <div th:if="${mensajeError}" class="status-msg error" style="display: block;">
+        <p th:text="${mensajeError}"></p>
+    </div>
+</div>
+
+<script>
+    // Solo dejamos Lucide para los iconos, nada de lógica de envío
+    lucide.createIcons();
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión Militar</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<header th:fragment="navbar_militar" class="header"
+        th:with="userPath=${#authorization.expression('hasAnyRole(''OFICIAL'', ''SUBOFICIAL'')') ? 'oficial' : 'soldado'}">
+    <div class="container">
+        <div class="header-content">
+
+            <div class="logo">
+                <i data-lucide="shield" class="logo-icon"></i>
+                <span class="logo-text">Gestión Militar</span>
+            </div>
+
+            <nav class="nav">
+                <a th:href="@{/api/home}" class="nav-link">Inicio</a>
+
+                <div class="dropdown">
+                    <button class="nav-link dropbtn">Cuartel <i data-lucide="chevron-down"></i></button>
+                    <div class="dropdown-content">
+                        <a th:href="@{/api/{path}/consultar/cuartel(path=${userPath})}">Consultar</a>
+
+                        <th:block sec:authorize="hasAnyRole('OFICIAL','SUBOFICIAL')">
+                            <a th:href="@{/api/{path}/agregar/cuartel(path=${userPath})}">Agregar</a>
+                            <a th:href="@{/api/{path}/eliminar/cuartel(path=${userPath})}">Eliminar</a>
+                            <a th:href="@{/api/{path}/editar/cuartel(path=${userPath})}">Editar</a>
+                            <a th:href="@{/api/oficial/asignar/cuartel}">asignar</a>
+                        </th:block>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="nav-link dropbtn">Cuerpo <i data-lucide="chevron-down"></i></button>
+                    <div class="dropdown-content">
+                        <a th:href="@{/api/{path}/consultar/cuerpo(path=${userPath})}">Consultar</a>
+
+                        <th:block sec:authorize="hasAnyRole('OFICIAL','SUBOFICIAL')">
+                            <a th:href="@{/api/{path}/agregar/cuerpo(path=${userPath})}">Agregar</a>
+                            <a th:href="@{/api/{path}/eliminar/cuerpo(path=${userPath})}">Eliminar</a>
+                            <a th:href="@{/api/{path}/editar/cuerpo(path=${userPath})}">Editar</a>
+                            <a th:href="@{/api/oficial/asignar/cuerpo}">asignar</a>
+                        </th:block>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="nav-link dropbtn">Compañía <i data-lucide="chevron-down"></i></button>
+                    <div class="dropdown-content">
+                        <a th:href="@{/api/{path}/consultar/compania(path=${userPath})}">Consultar</a>
+
+                        <th:block sec:authorize="hasAnyRole('OFICIAL','SUBOFICIAL')">
+                            <a th:href="@{/api/{path}/agregar/compania(path=${userPath})}">Agregar</a>
+                            <a th:href="@{/api/{path}/eliminar/compania(path=${userPath})}">Eliminar</a>
+                            <a th:href="@{/api/{path}/editar/compania(path=${userPath})}">Editar</a>
+                            <a th:href="@{/api/oficial/asignar/compania}">asignar</a>
+                        </th:block>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="nav-link dropbtn">Servicio <i data-lucide="chevron-down"></i></button>
+                    <div class="dropdown-content">
+                        <a th:href="@{/api/{path}/consultar/servicio(path=${userPath})}">Consultar</a>
+
+                        <th:block sec:authorize="hasAnyRole('OFICIAL','SUBOFICIAL')">
+                            <a th:href="@{/api/{path}/agregar/servicio(path=${userPath})}">Agregar</a>
+                            <a th:href="@{/api/{path}/eliminar/servicio(path=${userPath})}">Eliminar</a>
+                            <a th:href="@{/api/{path}/editar/servicio(path=${userPath})}">Editar</a>
+                            <a th:href="@{/api/oficial/asignar/servicio}">asignar</a>
+                        </th:block>
+                    </div>
+                </div>
+
+                <th:block sec:authorize="hasAnyRole('OFICIAL','SUBOFICIAL')">
+                    <div class="dropdown">
+                        <button class="nav-link dropbtn">Usuarios <i data-lucide="chevron-down"></i></button>
+                        <div class="dropdown-content">
+                            <a th:href="@{/api/{path}/consultar/usuario(path=${userPath})}">Consultar</a>
+                            <a th:href="@{/api/{path}/agregar/usuario(path=${userPath})}">Agregar</a>
+                            <a th:href="@{/api/{path}/eliminar/usuario(path=${userPath})}">Eliminar</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdown">
+                        <button class="nav-link dropbtn">Asignaciones <i data-lucide="chevron-down"></i></button>
+                        <div class="dropdown-content">
+                            <a th:href="@{/api/{path}/asignar/usuario(path=${userPath})}">Asignar Destino</a>
+                        </div>
+                    </div>
+                </th:block>
+            </nav>
+
+            <div class="header-actions">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn-logout">
+                        <i data-lucide="log-out"></i>
+                        <span>Salir</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+</body>
+</html>

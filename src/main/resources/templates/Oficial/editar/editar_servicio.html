@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Militar | Actualización</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/Home.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+
+</head>
+<body>
+
+<header th:replace="~{fragments/navbar :: navbar_militar}"></header>
+
+<main class="area-gestion-militar">
+    <div class="tarjeta-principal">
+
+        <div class="encabezado-oscuro">
+            <div class="circulo-icono">
+                <i class="fa-solid fa-user-pen"></i>
+            </div>
+            <div>
+                <h2 class="h5 mb-1" style="color: white; margin:0;">Actualización de Datos</h2>
+                <p class="mb-0 small" style="opacity: 0.8; margin:0;">Modifique los campos necesarios para el registro seleccionado</p>
+            </div>
+        </div>
+
+        <div class="cuerpo-formulario">
+
+            <div th:if="${mensaje}" class="alert alert-success py-2 small mb-4" th:text="${mensaje}"></div>
+            <div th:if="${error}" class="alert alert-danger py-2 small mb-4" th:text="${error}"></div>
+
+            <form th:action="@{/api/oficial/editar/servicio}" th:object="${servicioDto}" method="post">
+
+                <div class="seccion-input">
+                    <label class="etiqueta-form">Identificador (ID)</label>
+                    <input type="number" th:field="*{id}" class="input-estilizado" placeholder="Ej: 001" required>
+                </div>
+
+                <div class="seccion-input">
+                    <label class="etiqueta-form">Nombre Servicio</label>
+                    <input type="text" th:field="*{nombre_servicio}" class="input-estilizado" placeholder="Ingrese nombre..." required>
+                </div>
+                <div class="seccion-input">
+                    <label class="etiqueta-form">Descripcion Servicio</label>
+                    <input type="text" th:field="*{descripcion_servicio}" class="input-estilizado" placeholder="Ingrese descripcion..." required>
+                </div>
+                <div class="seccion-input">
+                    <label class="etiqueta-form">Rango / Jerarquía del Servicio</label>
+
+                    <select th:field="*{rango}" class="input-estilizado" required>
+                        <option value="" disabled selected>-- Seleccione Rango --</option>
+
+                        <th:block sec:authorize="hasRole('OFICIAL')">
+                            <option value="1">1 - Nivel Oficial</option>
+                            <option value="2">2 - Nivel Suboficial</option>
+                        </th:block>
+
+                        <option value="3">3 - Nivel Soldado</option>
+                    </select>
+                </div>
+
+                <div class="grupo-botones">
+                    <button type="submit" class="btn-principal">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>Aplicar Cambios
+                    </button>
+                    <a href="javascript:history.back()" class="btn-secundario">
+                        Volver
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

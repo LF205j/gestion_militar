@@ -1,0 +1,113 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Home</title>-->
+
+<!--    <link rel="stylesheet" th:href="@{/css/Home.css}">-->
+
+<!--    <link rel="stylesheet" th:href="@{/css/navbar.css}">-->
+
+<!--    <script src="https://unpkg.com/lucide@latest"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<header th:replace="fragments/navbar :: navbar_militar"></header>-->
+<!--<main>-->
+<!--</main>-->
+
+<!--<main class="dashboard-container">-->
+<!--    <h1>Listado de Cuerpos</h1>-->
+<!--</main>-->
+<!--<main class="dashboard-container" style="padding: 20px; max-width: 1200px; margin: 0 auto;">-->
+
+<!--    <div class="profile-card">-->
+<!--        <div class="profile-header" style="background-color: #2c3e50; color: white; padding: 20px 30px; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">-->
+<!--            <div style="display: flex; align-items: center; gap: 15px;">-->
+<!--                <div class="profile-avatar" style="background: rgba(255,255,255,0.1); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">-->
+<!--                    <i data-lucide="building-2"></i>-->
+<!--                </div>-->
+<!--                <h1 style="margin: 0; font-size: 1.5rem;">Listado de Companias</h1>-->
+<!--            </div>-->
+<!--            <span class="badge-rank" style="background: #34495e; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.2);">-->
+<!--                Sistema de Gestión-->
+<!--            </span>-->
+<!--        </div>-->
+
+<!--        <div class="profile-body" style="background: white; padding: 0; border: 1px solid #e1e4e8; border-top: none; border-radius: 0 0 8px 8px; overflow: hidden;">-->
+
+<!--            <div th:if="${#lists.isEmpty(companias)}" style="padding: 40px; text-align: center; color: #7f8c8d;">-->
+<!--                <i data-lucide="search-x" style="width: 48px; height: 48px; margin-bottom: 10px; opacity: 0.5;"></i>-->
+<!--                <p>No se encontraron cuarteles registrados en el sistema.</p>-->
+<!--            </div>-->
+
+<!--            <table th:if="${not #lists.isEmpty(companias)}" style="width: 100%; border-collapse: collapse; margin-bottom: 0;">-->
+<!--                <thead>-->
+<!--                <tr style="background-color: #f8f9fa; text-align: left; border-bottom: 2px solid #edf2f7;">-->
+<!--                    <th style="padding: 15px 25px; color: #4a5568; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">ID</th>-->
+<!--                    <th style="padding: 15px 25px; color: #4a5568; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">Actividad Principal </th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr th:each="c : ${companias}" style="border-bottom: 1px solid #edf2f7; transition: all 0.2s ease;"-->
+<!--                    onmouseover="this.style.backgroundColor='#f1f5f9'"-->
+<!--                    onmouseout="this.style.backgroundColor='transparent'">-->
+
+<!--                    <td th:text="${c.id}" style="padding: 15px 25px; color: #718096; font-family: monospace;">1</td>-->
+
+<!--                    <td style="padding: 15px 25px;">-->
+<!--                        <div style="display: flex; align-items: center; gap: 10px;">-->
+<!--                            <i data-lucide="map-pin" style="width: 16px; color: #3182ce;"></i>-->
+<!--                            <span th:text="${c.actividadPrincipal}" style="color: #2d3748; font-weight: 500;">Actividad Principal</span>-->
+<!--                        </div>-->
+<!--                    </td>-->
+
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</main>-->
+<!--<script>-->
+<!--    lucide.createIcons();-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de Cuerpos - Gestión Militar</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/Home.css}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<header th:replace="fragments/navbar :: navbar_militar"></header>
+
+<div class="search-container">
+    <h2 class="search-title">Búsqueda por Identificador</h2>
+
+    <form th:action="@{${targetAction}}" th:object="${companiaDto}" method="post">
+        <div class="form-group-custom">
+            <label>Código ID de la compania:</label>
+            <input type="number" th:field="*{id}" class="input-militar" placeholder="Ej: 101" required>
+        </div>
+        <button type="submit" class="btn-buscar-militar">Consultar Registro</button>
+    </form>
+
+    <div th:if="${compania != null}" class="militar-result-card">
+        <h3>Ficha del Cuerpo Militar</h3>
+        <p><strong>Número de Registro:</strong> <span th:text="${compania.id}"></span></p>
+        <p><strong>Denominación Oficial:</strong> <span th:text="${compania.actividadPrincipal}"></span></p>
+    </div>
+
+    <div th:if="${error != null}" class="error-msg-militar">
+        <p th:text="${error}"></p>
+    </div>
+</div>
+<script>
+    lucide.createIcons();
+</script>
+</body>
+</html>

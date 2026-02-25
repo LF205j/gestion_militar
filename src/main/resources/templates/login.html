@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion Militar - Iniciar Sesión</title>
+    <link rel="stylesheet" href="/css/Login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>PeliMarket Login</title>
+</head>
+<body>
+<div class="login-container">
+    <section class="branding-side">
+        <div class="branding-content">
+            <div class="logo-container">
+                <div class="logo-icon"><i class="fas fa-medal"></i></div>
+                <h1>Gestion Militar</h1>
+            </div>
+            <h2>Tu Sistema de Gestion Militar</h2>
+            <p>Soldados,Cuarteles,Cuerpos,Companias y Servicios</p>
+        </div>
+    </section>
+
+    <section class="form-side">
+        <div class="login-card">
+            <h3>Iniciar Sesión</h3>
+            <p class="subtitle">Ingresa tus credenciales para acceder a tu biblioteca audiovisual</p>
+
+            <form th:action="@{/login}" method="post">
+
+                <div class="input-group">
+                    <label>Email</label>
+                    <div class="input-wrapper">
+                        <i class="far fa-user"></i>
+                        <input type="text" name="email" placeholder="Tu usuario" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="contrasenia" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label><input type="checkbox" name="remember-me"> Recordarme</label>
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" class="btn-primary">Iniciar Sesión</button>
+            </form>
+
+            <p class="footer-text">¿No tienes una cuenta? <a href="#">Regístrate aquí</a></p>
+        </div>
+    </section>
+</div>
+</body>
+</html>

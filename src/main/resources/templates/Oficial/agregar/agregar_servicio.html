@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema Militar - Alta de Cuerpo</title>
+    <link rel="stylesheet" th:href="@{/css/Home.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar_militar}"></header>
+
+<main class="dashboard-container" style="display: flex; justify-content: center; padding-top: 40px;">
+
+    <div class="profile-card" style="max-width: 600px; width: 100%;">
+        <div class="profile-header" style="background-color: #2c3e50; color: white; padding: 20px 30px; border-radius: 8px 8px 0 0;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="profile-avatar" style="background: rgba(255,255,255,0.1);">
+                    <i data-lucide="shield-plus"></i>
+                </div>
+                <div>
+                    <h2 style="margin: 0; font-size: 1.4rem;">Registro de Nuevo Cuerpo</h2>
+                    <small style="opacity: 0.8;">Complete los datos de la unidad</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-body" style="background: white; padding: 30px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px;">
+
+            <form th:action="@{${targetAction}}" th:object="${nuevoServicio}" method="post">
+
+                <div class="info-box" style="margin-bottom: 25px; border-left: 4px solid #3498db;">
+                    <label style="display: block; font-weight: bold; color: #2c3e50; margin-bottom: 8px;">
+                        <i data-lucide="tag" style="width: 16px; vertical-align: middle;"></i> Nombre Servicio / Siglas
+                    </label>
+                    <input type="text" th:field="*{nombre_servicio}" required
+                           placeholder="Ej: INF-MAR"
+                           style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 6px;">
+                </div>
+
+
+                <div class="info-box" style="margin-bottom: 25px; border-left: 4px solid #3498db;">
+                    <label style="display: block; font-weight: bold; color: #2c3e50; margin-bottom: 8px;">
+                        <i data-lucide="tag" style="width: 16px; vertical-align: middle;"></i> Descripcion Servicio / Siglas
+                    </label>
+                    <input type="text" th:field="*{descripcion_servicio}" required
+                           placeholder="Ej: INF-MAR"
+                           style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 6px;">
+                </div>
+
+<!--                <div class="info-box" style="margin-bottom: 25px; border-left: 4px solid #3498db;">-->
+<!--                    <label style="display: block; font-weight: bold; color: #2c3e50; margin-bottom: 8px;">-->
+<!--                        <i data-lucide="tag" style="width: 16px; vertical-align: middle;"></i> Rango Servicio-->
+<!--                    </label>-->
+<!--                    <input type="number" th:field="*{rango}" required-->
+<!--                           placeholder="Ej: INF-MAR"-->
+<!--                           style="width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 6px;">-->
+<!--                </div>-->
+                <div class="info-box-militar">
+                    <label class="label-tactico">
+                        <i data-lucide="tag"></i> Jerarquía del Servicio
+                    </label>
+
+                    <select th:field="*{rango}" required class="select-tactico">
+                        <option value="" disabled selected>Seleccione nivel de acceso...</option>
+
+                        <th:block sec:authorize="hasRole('OFICIAL')">
+                            <option value="1">1 - Nivel Oficial (Acceso Total)</option>
+                            <option value="2">2 - Nivel Suboficial (Acceso Medio)</option>
+                        </th:block>
+
+                        <option value="3">3 - Nivel Soldado (Acceso Restringido)</option>
+                    </select>
+
+                    <span class="ayuda-rango" sec:authorize="hasRole('SUBOFICIAL')">
+        * Usted solo tiene permitido asignar servicios de Nivel 3.
+    </span>
+                </div>
+
+
+                <div style="display: flex; gap: 15px;">
+                    <button type="submit"
+                            style="flex: 2; background-color: #2c3e50; color: white; border: none; padding: 14px; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i data-lucide="save" style="width: 20px;"></i>
+                        Guardar Registro
+                    </button>
+
+                    <a th:href="@{/api/oficial/consultar/servicio}"
+                       style="flex: 1; text-align: center; background-color: #ecf0f1; color: #7f8c8d; text-decoration: none; padding: 14px; border-radius: 6px; font-weight: 600; border: 1px solid #bdc3c7;">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script>
+    lucide.createIcons();
+</script>
+</body>
+</html>

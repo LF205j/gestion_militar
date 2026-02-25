@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+    <link rel="stylesheet" th:href="@{/css/Home.css}">
+
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<header th:replace="fragments/navbar :: navbar_militar"></header>
+<main>
+</main>
+<main class="dashboard-container">
+
+    <div class="profile-card" th:if="${usuario != null}">
+
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i data-lucide="user"></i>
+            </div>
+            <div class="profile-title">
+                <h1 th:text="${usuario.nombre + ' ' + usuario.apellido}">Nombre del Soldado</h1>
+                <span class="badge-rank" th:text="${usuario.tipoUsuario}">RANGO</span>
+            </div>
+        </div>
+
+        <div class="profile-body">
+
+            <div class="info-box">
+                <h3><i data-lucide="mail"></i> Correo Electrónico</h3>
+                <p th:text="${usuario.email}">email@ejemplo.com</p>
+            </div>
+
+            <div class="info-box destacado">
+                <h3><i data-lucide="shield-half"></i> Cuerpo Militar</h3>
+                <p th:text="${usuario.nombreCuerpo}">Nombre del Cuerpo</p>
+            </div>
+
+            <div class="info-box">
+                <h3><i data-lucide="home"></i> Cuartel Asignado</h3>
+                <p th:text="${usuario.nombreCuartel}">Nombre del Cuartel</p>
+            </div>
+
+            <div class="info-box">
+                <h3><i data-lucide="users"></i> Compañía</h3>
+                <p th:text="${usuario.nombreCompania}">Nombre de la Compañía</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="profile-card" th:if="${usuario == null}" style="padding: 40px; text-align: center;">
+        <h2><i data-lucide="alert-triangle" style="color: #e74c3c;"></i> Ficha no encontrada</h2>
+        <p>No se pudieron cargar los datos del personal militar. Por favor, vuelve a iniciar sesión.</p>
+    </div>
+
+    <div class="profile-card" style="margin-top: 20px;" th:object="${usuario}">
+        <div class="profile-header" style="background-color: #34495e; color: white; padding: 15px 30px; border-radius: 8px 8px 0 0;">
+            <h2 style="margin: 0; font-size: 1.4rem; display: flex; align-items: center; gap: 10px;">
+                <i data-lucide="clipboard-list"></i> Historial de Servicios
+            </h2>
+        </div>
+
+        <div class="profile-body" style="background: white; padding: 20px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px;">
+
+            <p th:if="${#lists.isEmpty(usuario.nombresServicios)}" style="text-align: center; color: #7f8c8d; margin: 20px 0;">
+                <i data-lucide="info" style="vertical-align: middle; margin-right: 5px;"></i>
+                Este usuario no tiene servicios asignados actualmente.
+            </p>
+
+            <table th:if="${not #lists.isEmpty(usuario.nombresServicios)}" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                <tr style="text-align: left; border-bottom: 2px solid #ecf0f1;">
+                    <th style="padding: 12px; color: #2c3e50;">Nombre del Servicio</th>
+                    <th style="padding: 12px; color: #2c3e50; text-align: right;">Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ser : *{nombresServicios}" style="border-bottom: 1px solid #eee; transition: background 0.2s;"
+                    onmouseover="this.style.backgroundColor='#f9f9f9'"
+                    onmouseout="this.style.backgroundColor='transparent'">
+
+                    <td th:text="${ser}" style="padding: 12px; color: #34495e; font-weight: 500;">Guardia de Cuartel</td>
+                    <td style="padding: 12px; text-align: right;">
+                        <span style="background: #e8f4fd; color: #2980b9; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem;">Registrado</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+<script>
+    // Esto es necesario para que los iconos de lucide se dibujen en la pantalla
+    lucide.createIcons();
+</script>
+</body>
+</html>
