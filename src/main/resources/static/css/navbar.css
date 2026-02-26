@@ -1,0 +1,222 @@
+/* Variables de color militar */
+:root {
+    --verde-militar: #4b5320;
+    --gris-oscuro: #2b2b2b;
+    --acento-oro: #d4af37;
+    --blanco-humo: #f5f5f5;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--blanco-humo);
+}
+
+.header {
+    background-color: var(--gris-oscuro);
+    color: white;
+    padding: 0.5rem 0;
+    border-bottom: 3px solid var(--verde-militar);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    color: var(--acento-oro);
+}
+
+.nav {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--verde-militar);
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--gris-oscuro);
+    min-width: 180px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+    z-index: 100;
+    border-top: 2px solid var(--verde-militar);
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--verde-militar);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Botones de acción */
+.btn-logout {
+    color: #e74c3c;
+    transition: 0.3s;
+}
+
+.btn-logout:hover {
+    transform: scale(1.1);
+}
+/* Quitamos el fondo blanco de los botones del nav y dropdown */
+.nav-link, .dropbtn {
+    background: transparent; /* Importante para que no se vea el cuadro blanco */
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.nav-link:hover, .dropbtn:hover {
+    color: var(--acento-oro);
+    background-color: rgba(255, 255, 255, 0.1); /* Un brillo sutil al pasar el mouse */
+    border-radius: 4px;
+}
+
+/* Estilo para el botón de Cerrar Sesión */
+.btn-logout {
+    background: transparent;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    padding: 8px 15px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-logout:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* Aseguramos que los íconos tengan un tamaño correcto */
+.btn-logout i {
+    width: 18px;
+    height: 18px;
+}
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.user-card {
+    background: white;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    padding: 30px;
+    border-left: 5px solid #2c3e50; /* Color militar oscuro */
+}
+
+.user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.badge {
+    background: #e67e22;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.user-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.info-group label {
+    display: block;
+    color: #7f8c8d;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.info-group p {
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.actions {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.btn-edit {
+    background: #2c3e50;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-edit:hover {
+    background: #34495e;
+}

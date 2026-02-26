@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Traslado Masivo - Gestión Militar</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/Home.css}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<header th:replace="fragments/navbar :: navbar_militar"></header>
+
+<main class="container" style="padding: 2rem; color: white;">
+    <h1>Ejecución de Traslados Masivos</h1>
+    <p>Seleccione la categoría y asigne el nuevo destino para todo el personal.</p>
+
+    <div th:if="${mensajeExito}" style="background: #27ae60; padding: 10px; border-radius: 5px; margin-bottom: 15px;" th:text="${mensajeExito}"></div>
+    <div th:if="${mensajeError}" style="background: #c0392b; padding: 10px; border-radius: 5px; margin-bottom: 15px;" th:text="${mensajeError}"></div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+
+        <div style="background: #1e1e1e; padding: 20px; border: 1px solid #333; border-radius: 8px;">
+            <h3><i data-lucide="building-2"></i> Reasignar Cuartel</h3>
+            <form th:action="@{/api/oficial/asignacion/reasignar}" th:object="${asignacionDto}" method="post">
+                <label>ID Cuartel Origen:</label>
+                <input type="number" th:field="*{idCuartel}" class="form-control" style="width: 100%; margin: 10px 0;" required>
+
+                <label>ID Cuartel Destino:</label>
+                <input type="number" name="idDestino" class="form-control" style="width: 100%; margin: 10px 0;" required>
+
+                <button type="submit" class="btn-danger" style="width: 100%; padding: 10px; cursor: pointer;"
+                        onclick="return confirm('¿Confirma el traslado de todo el personal?')">Ejecutar</button>
+            </form>
+        </div>
+
+        <div style="background: #1e1e1e; padding: 20px; border: 1px solid #333; border-radius: 8px;">
+            <h3><i data-lucide="users"></i> Reasignar Compañía</h3>
+            <form th:action="@{/api/oficial/asignacion/reasignar}" th:object="${asignacionDto}" method="post">
+                <label>ID Compañía Origen:</label>
+                <input type="number" th:field="*{idCompania}" class="form-control" style="width: 100%; margin: 10px 0;" required>
+
+                <label>ID Compañía Destino:</label>
+                <input type="number" name="idDestino" class="form-control" style="width: 100%; margin: 10px 0;" required>
+
+                <button type="submit" class="btn-danger" style="width: 100%; padding: 10px; cursor: pointer;"
+                        onclick="return confirm('¿Confirma el traslado de todo el personal?')">Ejecutar</button>
+            </form>
+        </div>
+
+        <div style="background: #1e1e1e; padding: 20px; border: 1px solid #333; border-radius: 8px;">
+            <h3><i data-lucide="shield"></i> Reasignar Cuerpo</h3>
+            <form th:action="@{/api/oficial/asignacion/reasignar}" th:object="${asignacionDto}" method="post">
+                <label>ID Cuerpo Origen:</label>
+                <input type="number" th:field="*{idCuerpo}" class="form-control" style="width: 100%; margin: 10px 0;" required>
+
+                <label>ID Cuerpo Destino:</label>
+                <input type="number" name="idDestino" class="form-control" style="width: 100%; margin: 10px 0;" required>
+
+                <button type="submit" class="btn-danger" style="width: 100%; padding: 10px; cursor: pointer;"
+                        onclick="return confirm('¿Confirma el traslado de todo el personal?')">Ejecutar</button>
+            </form>
+        </div>
+
+    </div>
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>

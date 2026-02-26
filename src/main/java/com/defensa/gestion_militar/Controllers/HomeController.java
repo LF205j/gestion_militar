@@ -1,0 +1,36 @@
+package com.defensa.gestion_militar.Controllers;
+
+import com.defensa.gestion_militar.DTOs.UsuarioDTO;
+import com.defensa.gestion_militar.Entity.RealizaServicio;
+import com.defensa.gestion_militar.Entity.Servicios;
+import com.defensa.gestion_militar.Services.RealizarServicioService;
+import com.defensa.gestion_militar.Services.UsuariosService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/api/home")
+public class HomeController {
+
+    @Autowired
+    UsuariosService usuariosService;
+
+    @Autowired
+    RealizarServicioService realizarServicioService;
+
+    @GetMapping("/{id}")
+    public String verDatos(@PathVariable Long id, Model model){
+
+       UsuarioDTO usuario= usuariosService.obtenerUserPorId(id);
+       List<RealizaServicio> serviciosList=realizarServicioService.obtenerTodosLosServiciosPorId(id);
+       model.addAttribute("usuario",usuario);
+       model.addAttribute("servicios",serviciosList);
+       return "home";
+    }
+}

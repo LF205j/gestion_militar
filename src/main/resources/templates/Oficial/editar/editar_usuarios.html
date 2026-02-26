@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Militar | Actualización Usuario</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/Home.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+
+    <style>
+        .input-estilizado {
+            width: 100%;
+            padding: 10px;
+            background: #2d2d2d;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        .etiqueta-form {
+            font-size: 0.85rem;
+            color: #aaa;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .seccion-input { margin-bottom: 1.2rem; }
+        .divider-form { border-top: 1px solid #333; margin: 1.5rem 0; }
+    </style>
+</head>
+<body>
+
+<header th:replace="~{fragments/navbar :: navbar_militar}"></header>
+
+<main class="area-gestion-militar">
+    <div class="tarjeta-principal" style="max-width: 600px; margin: 2rem auto;">
+
+        <div class="encabezado-oscuro">
+            <div class="circulo-icono">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div>
+                <h2 class="h5 mb-1" style="color: white; margin:0;">Actualización de Usuario</h2>
+                <p class="mb-0 small" style="opacity: 0.8; margin:0;">Modifique el rango, datos personales o credenciales</p>
+            </div>
+        </div>
+
+        <div class="cuerpo-formulario">
+
+            <div th:if="${mensaje}" class="alert alert-success py-2 small mb-4" th:text="${mensaje}"></div>
+            <div th:if="${error}" class="alert alert-danger py-2 small mb-4" th:text="${error}"></div>
+
+            <form th:action="@{/api/oficial/editar/usuario}" th:object="${usuarioDto}" method="post">
+
+                <div class="seccion-input">
+                    <label class="etiqueta-form">ID Militar (Requerido)</label>
+                    <input type="number" th:field="*{id}" class="input-estilizado" placeholder="Ej: 1025" required>
+                </div>
+
+                <div class="divider-form"></div>
+
+                <div class="row">
+                    <div class="col-md-6 seccion-input">
+                        <label class="etiqueta-form">Nombre</label>
+                        <input type="text" th:field="*{nombre}" class="input-estilizado" placeholder="Nombre..." required>
+                    </div>
+                    <div class="col-md-6 seccion-input">
+                        <label class="etiqueta-form">Apellido</label>
+                        <input type="text" th:field="*{apellido}" class="input-estilizado" placeholder="Apellido..." required>
+                    </div>
+                </div>
+
+                <div class="seccion-input">
+                    <label class="etiqueta-form">Correo Electrónico</label>
+                    <input type="email" th:field="*{email}" class="input-estilizado" placeholder="militar@ejercito.mil" required>
+                </div>
+
+                <div class="seccion-input">
+                    <label class="etiqueta-form">Rango / Grado</label>
+                    <select th:field="*{tipoUsuario}" class="input-estilizado" required>
+                        <option value="" disabled selected>Seleccione rango...</option>
+                        <option value="SOLDADO">SOLDADO</option>
+                        <option value="SUBOFICIAL">SUBOFICIAL</option>
+                        <option value="OFICIAL">OFICIAL</option>
+                    </select>
+                    <small style="color: #666;">Debe coincidir con las categorías permitidas.</small>
+                </div>
+
+                <div class="divider-form"></div>
+
+                <div class="seccion-input">
+                    <label class="etiqueta-form">Actualizar Contraseña</label>
+                    <input type="password" name="nuevaPass" class="input-estilizado" placeholder="Dejar en blanco si no desea cambiarla">
+                </div>
+
+                <div class="grupo-botones mt-4">
+                    <button type="submit" class="btn-principal w-100 mb-2">
+                        <i class="fa-solid fa-user-check me-2"></i>Actualizar Registro
+                    </button>
+                    <a th:href="@{/api/oficial/consultar/usuario}" class="btn-secundario w-100 text-center d-block" style="text-decoration:none;">
+                        Cancelar y Volver
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Lucide o FontAwesome ya están cargados, si usas Lucide añade: lucide.createIcons();
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de Cuerpos - Gestión Militar</title>
+  <link rel="stylesheet" th:href="@{/css/navbar.css}">
+  <link rel="stylesheet" th:href="@{/css/Home.css}">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<header th:replace="fragments/navbar :: navbar_militar"></header>
+
+<div class="search-container">
+  <h2 class="search-title">Búsqueda por Identificador</h2>
+
+  <form th:action="@{/api/oficial/consultar/servicio}" th:object="${servicioDto}" method="post">
+    <div class="form-group-custom">
+      <label>Código ID del Servicio:</label>
+      <input type="number" th:field="*{id}" class="input-militar" placeholder="Ej: 101" required>
+    </div>
+    <button type="submit" class="btn-buscar-militar">Consultar Registro</button>
+  </form>
+
+  <div th:if="${servicio != null}" class="militar-result-card">
+    <h3>Ficha del Servicio Militar</h3>
+    <p><strong>Número de Registro:</strong> <span th:text="${servicio.id}"></span></p>
+    <p><strong>Nombre Servicio:</strong> <span th:text="${servicio.nombre_servicio}"></span></p>
+    <p><strong>Nombre Servicio:</strong> <span th:text="${servicio.descripcion_servicio}"></span></p>
+    <p><strong>Rango Servicio:</strong> <span th:text="${servicio.rango}"></span></p>
+  </div>
+
+  <div th:if="${error != null}" class="error-msg-militar">
+    <p th:text="${error}"></p>
+  </div>
+</div>
+<script>
+  lucide.createIcons();
+</script>
+</body>
+</html>
