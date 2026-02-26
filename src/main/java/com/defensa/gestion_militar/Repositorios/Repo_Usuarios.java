@@ -21,8 +21,11 @@ public interface Repo_Usuarios extends JpaRepository<Usuario,Long> {
     Optional<Usuario> findByEmail(String email);
     boolean existsByEmail(String email);
     List<Usuario> findByCuartelId(Long cuartelId);
+<<<<<<< HEAD
     List<Usuario> findByCuerpoId(Long cuerpoId);
     List<Usuario> findByCompaniaId(Long companiaId);
+=======
+>>>>>>> 2b0fd70b4153b41a8be5cbd15d85b0af564bdfbc
     List<Usuario> findByServiciosRealizados_Servicio_Id(Long servicioId);
 
 

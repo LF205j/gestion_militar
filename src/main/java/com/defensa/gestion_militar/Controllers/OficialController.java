@@ -18,7 +18,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> 2b0fd70b4153b41a8be5cbd15d85b0af564bdfbc
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +43,11 @@ public class OficialController {
     @Autowired
     private Repo_Cuerpos repoCuerpo;
     @Autowired
+<<<<<<< HEAD
     private Repo_Cuarteles repoCuarteles;
     @Autowired
+=======
+>>>>>>> 2b0fd70b4153b41a8be5cbd15d85b0af564bdfbc
     private AsignacionService asignacionService;
 
 
@@ -367,6 +373,7 @@ public class OficialController {
         }
         return "/oficial/editar/editar_cuartel";
     }
+<<<<<<< HEAD
     @GetMapping("/editar/usuario")
     public String mostrarFormularioEditarUsuario(Model model) {
         // Entregamos un DTO vacío para que el usuario ingrese el ID y los datos
@@ -391,6 +398,8 @@ public class OficialController {
         // Redirigimos para limpiar el formulario y mostrar el mensaje
         return "/oficial/editar/editar_usuarios";
     }
+=======
+>>>>>>> 2b0fd70b4153b41a8be5cbd15d85b0af564bdfbc
 
     @GetMapping("/editar/cuerpo")
     public String mostrarFormularioEditarCuerpo(Model model){
@@ -519,6 +528,7 @@ public class OficialController {
         return "/oficial/asignacion/asignar/asignar_servicio";
     }
 
+<<<<<<< HEAD
 @GetMapping("/asignacion/consultar")
 public String paginaConsultaMultiple(Model model) {
     // Enviamos un DTO vacío.
@@ -592,4 +602,6 @@ public String paginaConsultaMultiple(Model model) {
         return "/oficial/asignacion/reasignar/reasignar_asignaciones";
     }
 
+=======
+>>>>>>> 2b0fd70b4153b41a8be5cbd15d85b0af564bdfbc
 }

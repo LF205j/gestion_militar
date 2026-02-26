@@ -154,6 +154,7 @@ public class UsuariosService {
         }
         repo_user.save(usuario);
     }
+<<<<<<< HEAD
 //    public void editarUsuario(Long id, UsuarioDTO dto, String nuevaPass) {
 //        Usuario usuario = repo_user.findById(id)
 //                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -213,6 +214,36 @@ public class UsuariosService {
 //        // y actualiza las claves foráneas automáticamente.
 //        repo_user.save(usuario);
 //    }
+=======
+
+    public void asignarDestinos(AsignacionDTO dto){
+        Usuario usuario=repo_user.findById(dto.getUsuarioId()).orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + dto.getUsuarioId()));;
+        if (dto.getIdCuartel() != null) {
+            Cuartel cuartel = repoCuarteles.findById(dto.getIdCuartel())
+                    .orElseThrow(() -> new RuntimeException("Cuartel no encontrado"));
+            usuario.setCuartel(cuartel);
+        }
+
+        // 3. Asignación de Cuerpo
+        if (dto.getIdCuerpo() != null) {
+            Cuerpo cuerpo = repoCuerpos.findById(dto.getIdCuerpo())
+                    .orElseThrow(() -> new RuntimeException("Cuerpo no encontrado"));
+            usuario.setCuerpo(cuerpo);
+        }
+
+        // 4. Asignación de Compañía
+        if (dto.getIdCompania() != null) {
+            Compania compania = repoCompanias.findById(dto.getIdCompania())
+                    .orElseThrow(() -> new RuntimeException("Compañía no encontrada"));
+            usuario.setCompania(compania);
+        }
+
+        // 5. Guardar cambios
+        // Gracias a @Transactional, JPA detecta los cambios en los setters
+        // y actualiza las claves foráneas automáticamente.
+        repo_user.save(usuario);
+    }
+>>>>>>> 2b0fd70b4153b41a8be5cbd15d85b0af564bdfbc
 
     public CuartelDTO obtenerCuartelUsuarioIdentificado() {
         // 1. Obtener el email del usuario desde la sesión de Spring Security
@@ -266,6 +297,7 @@ public class UsuariosService {
         }
         return cuerpoMapper.toDTO(usuario.getCuerpo());
     }
+<<<<<<< HEAD
 
     public List<UsuarioDTO> obtenerUsuariosPorCuartel(Long idCuartel) {
         // 1. Buscamos la lista de entidades en el repositorio
@@ -304,4 +336,6 @@ public class UsuariosService {
                 .map(usuarioMapper::toDTO)
                 .collect(Collectors.toList());
     }
+=======
+>>>>>>> 2b0fd70b4153b41a8be5cbd15d85b0af564bdfbc
 }

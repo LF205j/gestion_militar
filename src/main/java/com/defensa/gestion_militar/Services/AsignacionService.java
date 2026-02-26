@@ -89,6 +89,7 @@ public class AsignacionService {
 
 
     }
+<<<<<<< HEAD
     public void ReasignarCuartel(Long idNuevoCuartel,Long idViejoCuartel){
         Cuartel cuartelDestino=repoCuartel.findById(idNuevoCuartel).orElseThrow(() -> new RuntimeException("Cuartel no encontrado"));
 
@@ -139,4 +140,6 @@ public class AsignacionService {
 //        }
 //        repoUsuario.saveAll(usuarios);
 //    }
+=======
+>>>>>>> 2b0fd70b4153b41a8be5cbd15d85b0af564bdfbc
 }
