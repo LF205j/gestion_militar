@@ -25,4 +25,7 @@ public class RealizaServicio extends Identificable { // <--- Ahora hereda el 'co
 
     @Column(name = "observaciones")
     private String observaciones;
+
+    @Column(name = "realizado", nullable = false)
+    private boolean realizado = false; // Por defecto false
 }

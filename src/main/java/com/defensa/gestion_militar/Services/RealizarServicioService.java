@@ -19,5 +19,17 @@ public class RealizarServicioService {
 
     }
 
+    public void marcarComoRealizado(Long id) {
+        // Buscamos el registro por su ID (el de la tabla realiza_servicio)
+        RealizaServicio registro = repo_realizarServicio.findById(id)
+                .orElseThrow(() -> new RuntimeException("No se encontró el registro de servicio con ID: " + id));
+
+        // Cambiamos el estado
+        registro.setRealizado(true);
+
+        // Guardamos los cambios
+        repo_realizarServicio.save(registro);
+    }
+
 
 }
