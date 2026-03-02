@@ -3,6 +3,7 @@ package com.defensa.gestion_militar.Entity;
 
 
 import com.defensa.gestion_militar.Capacidad.CapacidadServicio;
+import com.defensa.gestion_militar.Capacidad.CapacidadVerSusDatos;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(exclude = {"cuartel", "cuerpo", "compania","serviciosRealizados"}) // ¡Agregá esto!
-public abstract class Usuario extends Identificable implements CapacidadServicio {
+public abstract class Usuario extends Identificable implements CapacidadServicio, CapacidadVerSusDatos {
 
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;

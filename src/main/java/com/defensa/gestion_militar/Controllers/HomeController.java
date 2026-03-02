@@ -3,6 +3,7 @@ package com.defensa.gestion_militar.Controllers;
 import com.defensa.gestion_militar.DTOs.UsuarioDTO;
 import com.defensa.gestion_militar.Entity.RealizaServicio;
 import com.defensa.gestion_militar.Entity.Servicios;
+import com.defensa.gestion_militar.Entity.Usuario;
 import com.defensa.gestion_militar.Services.RealizarServicioService;
 import com.defensa.gestion_militar.Services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class HomeController {
 
     @GetMapping("/{id}")
     public String verDatos(@PathVariable Long id, Model model){
-
-       UsuarioDTO usuario= usuariosService.obtenerUserPorId(id);
+        Usuario usuarioAdmin=usuariosService.obtenerUsuarioLogueado();
+       UsuarioDTO usuario= usuariosService.obtenerUserPorId(usuarioAdmin.getId(),id);
        List<RealizaServicio> serviciosList=realizarServicioService.obtenerTodosLosServiciosPorId(id);
        model.addAttribute("usuario",usuario);
        model.addAttribute("servicios",serviciosList);

@@ -1,4 +1,5 @@
 package com.defensa.gestion_militar.Capacidad;
 
-public interface CapacidadSoldado {
+public interface CapacidadSoldado extends  CapacidadVerSusDatos{
+
 }

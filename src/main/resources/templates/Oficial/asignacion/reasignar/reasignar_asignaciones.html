@@ -21,7 +21,7 @@
 
         <div style="background: #1e1e1e; padding: 20px; border: 1px solid #333; border-radius: 8px;">
             <h3><i data-lucide="building-2"></i> Reasignar Cuartel</h3>
-            <form th:action="@{/api/oficial/asignacion/reasignar}" th:object="${asignacionDto}" method="post">
+            <form th:action="@{${targetAction}}" th:object="${asignacionDto}" method="post">
                 <label>ID Cuartel Origen:</label>
                 <input type="number" th:field="*{idCuartel}" class="form-control" style="width: 100%; margin: 10px 0;" required>
 
@@ -35,7 +35,7 @@
 
         <div style="background: #1e1e1e; padding: 20px; border: 1px solid #333; border-radius: 8px;">
             <h3><i data-lucide="users"></i> Reasignar Compañía</h3>
-            <form th:action="@{/api/oficial/asignacion/reasignar}" th:object="${asignacionDto}" method="post">
+            <form th:action="@{${targetAction}}" th:object="${asignacionDto}" method="post">
                 <label>ID Compañía Origen:</label>
                 <input type="number" th:field="*{idCompania}" class="form-control" style="width: 100%; margin: 10px 0;" required>
 
@@ -49,7 +49,7 @@
 
         <div style="background: #1e1e1e; padding: 20px; border: 1px solid #333; border-radius: 8px;">
             <h3><i data-lucide="shield"></i> Reasignar Cuerpo</h3>
-            <form th:action="@{/api/oficial/asignacion/reasignar}" th:object="${asignacionDto}" method="post">
+            <form th:action="@{${targetAction}}" th:object="${asignacionDto}" method="post">
                 <label>ID Cuerpo Origen:</label>
                 <input type="number" th:field="*{idCuerpo}" class="form-control" style="width: 100%; margin: 10px 0;" required>
 

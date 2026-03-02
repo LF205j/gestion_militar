@@ -1,6 +1,7 @@
 package com.defensa.gestion_militar.Controllers;
 
 import com.defensa.gestion_militar.DTOs.*;
+import com.defensa.gestion_militar.Entity.Usuario;
 import com.defensa.gestion_militar.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,8 @@ public class SuboficialController {
 
     @Autowired
     private ServicioService servicioService;
+    @Autowired
+    private AsignacionService asignacionService;
 
     @GetMapping("/consultar/cuerpo")
     public String obtenerFormularioCuerpoPorId(Model model){
@@ -35,7 +38,8 @@ public class SuboficialController {
     }
     @PostMapping("/consultar/cuerpo")
     public String obtenerCuerpoPorId(@ModelAttribute("cuerpoDto") CuerpoDTO dto, Model model){
-        CuerpoDTO cuerpoEncontrado = cuerpoService.obtenerCuerpoPorId(dto.getId());
+        Usuario usuarioRegistrado=usuariosService.obtenerUsuarioLogueado();
+        CuerpoDTO cuerpoEncontrado = cuerpoService.obtenerCuerpoPorId(usuarioRegistrado.getId(),dto.getId());
 
         if (cuerpoEncontrado != null) {
             model.addAttribute("cuerpo", cuerpoEncontrado);
@@ -55,7 +59,8 @@ public class SuboficialController {
     }
     @PostMapping("/consultar/compania")
     public String obtenerCompaniaPorId(@ModelAttribute("companiaDto") CompaniaDTO dto, Model model){
-        CompaniaDTO companiaEncontrado = companiaService.obtenerUserPorId(dto.getId());
+        Usuario usuarioAdmin=usuariosService.obtenerUsuarioLogueado();
+        CompaniaDTO companiaEncontrado = companiaService.obtenerCompaniaPorId(usuarioAdmin.getId(),dto.getId());
 
         if (companiaEncontrado != null) {
             model.addAttribute("compania", companiaEncontrado);
@@ -75,7 +80,8 @@ public class SuboficialController {
     }
     @PostMapping("/consultar/cuartel")
     public String obtenerCuartelPorId(@ModelAttribute("cuartelDto") CuartelDTO dto, Model model){
-        CuartelDTO cuartelEncontrado = cuartelService.obtenerUserPorId(dto.getId());
+        Usuario usuarioAdmin=usuariosService.obtenerUsuarioLogueado();
+        CuartelDTO cuartelEncontrado = cuartelService.obtenerCuartelPorId(usuarioAdmin.getId(),dto.getId());
 
         if (cuartelEncontrado != null) {
             model.addAttribute("cuartel", cuartelEncontrado);
@@ -92,7 +98,10 @@ public class SuboficialController {
     }
 
     @GetMapping("/asignar/compania")
-    public String asignarCompania(){
+    public String asignarCompania(@RequestParam("idSoldado") Long idSoldado,
+                                  @RequestParam("idCompania") Long idCompania,
+                                  RedirectAttributes ra){
+
         return "/suboficial/asginar/asignar_compania";
     }
     @GetMapping("/asignar/cuerpo")
@@ -111,8 +120,8 @@ public class SuboficialController {
     }
     @PostMapping("/eliminar/cuerpo") // <--- Debe ser POST
     public String eliminarCuerpo(@RequestParam("id")Long id, Model model) {
-
-        cuerpoService.eliminarCuerpo(id);
+        Usuario usuarioLogueado = usuariosService.obtenerUsuarioLogueado();
+        cuerpoService.eliminarCuerpo(usuarioLogueado.getId(),id);
         model.addAttribute("mensaje", "Cuerpo con ID " + id + " eliminado con éxito.");
         return "/oficial/eliminar/eliminar_cuerpo";
     }
@@ -123,8 +132,8 @@ public class SuboficialController {
     }
     @PostMapping("/eliminar/cuartel") // <--- Debe ser POST
     public String eliminarCuartel(@RequestParam("id")Long id,Model model) {
-
-        cuartelService.eliminarCuartel(id);
+        Usuario usuarioLogueado = usuariosService.obtenerUsuarioLogueado();
+        cuartelService.eliminarCuartel(usuarioLogueado.getId(), id);
         model.addAttribute("mensaje", "Cuartel con ID " + id + " eliminado con éxito.");
         return "/oficial/eliminar/eliminar_cuartel";
     }
@@ -136,8 +145,8 @@ public class SuboficialController {
     }
     @PostMapping("/eliminar/compania") // <--- Debe ser POST
     public String eliminarCompania(@RequestParam("id")Long id,Model model) {
-
-        companiaService.eliminarCompania(id);
+        Usuario usuarioLogueado = usuariosService.obtenerUsuarioLogueado();
+        companiaService.eliminarCompania(usuarioLogueado.getId(),id);
         model.addAttribute("mensaje", "Compania con ID " + id + " eliminado con éxito.");
         return "/oficial/eliminar/eliminar_compania";
     }
@@ -151,8 +160,9 @@ public class SuboficialController {
 
     @PostMapping("/agregar/cuerpo")
     public String agregarCuerpo(@ModelAttribute("nuevoCuerpo") CuerpoDTO cuerpoDTO, RedirectAttributes redirectAttributes){
+        Usuario usuarioLogueado = usuariosService.obtenerUsuarioLogueado();
         try {
-            cuerpoService.guardarCuerpo(cuerpoDTO);
+            cuerpoService.guardarCuerpo(usuarioLogueado.getId(),cuerpoDTO);
             redirectAttributes.addFlashAttribute("mensaje", "Cuerpo militar registrado con éxito.");
             return "/oficial/agregar/agregar_cuerpo"; // Redirige a la lista para ver el nuevo
         } catch (Exception e) {
@@ -171,9 +181,10 @@ public class SuboficialController {
 
     @PostMapping("/agregar/compania")
     public String agregarCompania(@ModelAttribute("nuevaCompania") CompaniaDTO companiaDTO, RedirectAttributes redirectAttributes){
+        Usuario usuarioLogueado = usuariosService.obtenerUsuarioLogueado();
         try {
 
-            companiaService.guardarCompania(companiaDTO);
+            companiaService.guardarCompania(usuarioLogueado.getId(),companiaDTO);
             redirectAttributes.addFlashAttribute("mensaje", "Compania militar registrado con éxito.");
             return "/oficial/agregar/agregar_compania"; // Redirige a la lista para ver el nuevo
         } catch (Exception e) {
@@ -192,9 +203,10 @@ public class SuboficialController {
 
     @PostMapping("/agregar/cuartel")
     public String agregarCuartel(@ModelAttribute("nuevoCuartel") CuartelDTO cuartelDTO, RedirectAttributes redirectAttributes){
+        Usuario usuarioLogueado = usuariosService.obtenerUsuarioLogueado();
         try {
 
-            cuartelService.guardarCuartel(cuartelDTO);
+            cuartelService.guardarCuartel(usuarioLogueado.getId(),cuartelDTO);
             redirectAttributes.addFlashAttribute("mensaje", "Cuartel militar registrado con éxito.");
             return "/oficial/agregar/agregar_cuartel"; // Redirige a la lista para ver el nuevo
         } catch (Exception e) {
@@ -220,7 +232,8 @@ public class SuboficialController {
     @PostMapping("/agregar/usuario")
     public String guardarNuevoUsuario(@ModelAttribute("usuarioDto") UsuarioDTO dto, RedirectAttributes ra) {
         try {
-            usuariosService.guardarUsuario(dto);
+            Usuario usuarioAdmin=usuariosService.obtenerUsuarioLogueado();
+            usuariosService.guardarUsuario(usuarioAdmin.getId(),dto);
             ra.addFlashAttribute("mensaje", "Usuario registrado correctamente.");
             return "redirect:/api/oficial/consultar/usuario";
         } catch (Exception e) {
@@ -236,7 +249,8 @@ public class SuboficialController {
     }
     @PostMapping("/agregar/servicio")
     public String guardarServicio(@ModelAttribute("nuevoServicio") ServiciosDTO dto,RedirectAttributes redirectAttributes) {
-        servicioService.guardarServicio(dto);
+        Usuario usuarioAdmin=usuariosService.obtenerUsuarioLogueado();
+        servicioService.guardarServicio(usuarioAdmin.getId(),dto);
         redirectAttributes.addFlashAttribute("mensaje", "Servicio  registrado con éxito.");
         return "/oficial/agregar/agregar_servicio";
     }
@@ -257,5 +271,41 @@ public class SuboficialController {
 
         // REDIRIGIMOS a la lista para que la tabla se actualice sola
         return "/oficial/eliminar/eliminar_usuario";
+    }
+
+    @GetMapping("/asignacion/reasignar")
+    public String paginaReasignar(Model model) {
+        model.addAttribute("asignacionDto", new AsignacionDTO());
+        model.addAttribute("targetAction", "/api/suboficial/asignacion/reasignar");
+        return "/oficial/asignacion/reasignar/reasignar_asignaciones";
+    }
+
+    // --- POST: Procesa la ejecución de reasignación ---
+    @PostMapping("/asignacion/reasignar")
+    public String ejecutarReasignacion(
+            @ModelAttribute("asignacionDto") AsignacionDTO dto,
+            @RequestParam("idDestino") Long idDestino,
+            RedirectAttributes ra) {
+
+        try {
+            // Validamos cuál campo del formulario fue llenado (ID Viejo)
+            if (dto.getIdCuartel() != null) {
+                asignacionService.ReasignarCuartel(idDestino, dto.getIdCuartel());
+                ra.addFlashAttribute("mensajeExito", "¡Éxito! El personal del Cuartel ha sido trasladado.");
+            }
+            else if (dto.getIdCompania() != null) {
+                asignacionService.ReasignarCompania(idDestino, dto.getIdCompania());
+                ra.addFlashAttribute("mensajeExito", "¡Éxito! El personal de la Compañía ha sido trasladado.");
+            }
+            else if (dto.getIdCuerpo() != null) {
+                asignacionService.ReasignarCuerpo(idDestino, dto.getIdCuerpo());
+                ra.addFlashAttribute("mensajeExito", "¡Éxito! El personal del Cuerpo ha sido trasladado.");
+            }
+        } catch (Exception e) {
+            ra.addFlashAttribute("mensajeError", "Error en el proceso: " + e.getMessage());
+        }
+
+        // Redirección para limpiar el formulario y evitar re-envíos accidentales
+        return "/oficial/asignacion/reasignar/reasignar_asignaciones";
     }
 }

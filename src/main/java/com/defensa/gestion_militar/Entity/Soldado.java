@@ -23,4 +23,28 @@ public class Soldado extends Usuario implements CapacidadSoldado {
     public void mostrarMenu() {
 
     }
+
+    @Override
+    public void verMiCuartel() {
+        if (this.getCuartel() == null) {
+            throw new RuntimeException("Denegado: No tienes una Cuartel asignada actualmente.");
+        }
+        System.out.println("Usuario " + this.getApellido() + " accediendo a datos de su compañía.");
+    }
+
+    @Override
+    public void verMiCompania() {
+        if (this.getCompania() == null) {
+            throw new RuntimeException("Denegado: No tienes una compañía asignada actualmente.");
+        }
+        System.out.println("Usuario " + this.getApellido() + " accediendo a datos de su compañía.");
+    }
+
+    @Override
+    public void verMiCuerpo() {
+        if (this.getCuerpo() == null) {
+            throw new RuntimeException("Denegado: No tienes una cuerpo asignada actualmente.");
+        }
+        System.out.println("Usuario " + this.getApellido() + " accediendo a datos de su compañía.");
+    }
 }

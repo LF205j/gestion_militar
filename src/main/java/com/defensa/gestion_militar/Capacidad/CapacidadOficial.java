@@ -1,4 +1,10 @@
 package com.defensa.gestion_militar.Capacidad;
 
-public interface CapacidadOficial {
+public interface CapacidadOficial extends
+        CapacidadGestionCuartel,
+        CapacidadGestionCuerpo,
+        CapacidadGestionCompania,
+        CapacidadGestionServicio,
+        CapacidadGestionUsuario {
+
 }
