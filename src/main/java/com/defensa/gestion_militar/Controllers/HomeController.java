@@ -30,7 +30,7 @@ public class HomeController {
 //       UsuarioDTO usuario= usuariosService.obtenerUserPorId(usuarioAdmin.getId(),id);
 //       List<RealizaServicio> serviciosList=realizarServicioService.obtenerTodosLosServiciosPorId(id);
         Usuario usuarioAdmin = usuariosService.obtenerUsuarioLogueado(); //
-        UsuarioDTO usuario = usuariosService.obtenerUserPorId(usuarioAdmin.getId(), id); //
+        UsuarioDTO usuario = usuariosService.obtenerUserPorId(usuarioAdmin.getId()); //
 
         // Convertir la lista de RealizaServicio a ServicioHistorialDTO
         List<ServicioHistorialDTO> serviciosList = realizarServicioService.obtenerTodosLosServiciosPorId(id)

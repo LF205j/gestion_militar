@@ -5,6 +5,6 @@ public interface CapacidadOficial extends
         CapacidadGestionCuerpo,
         CapacidadGestionCompania,
         CapacidadGestionServicio,
-        CapacidadGestionUsuario {
+        CapacidadGestionUsuario,CapacidadVerSusDatos,CapacidadServicio {
 
 }

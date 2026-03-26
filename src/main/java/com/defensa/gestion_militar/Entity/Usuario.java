@@ -20,8 +20,8 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(exclude = {"cuartel", "cuerpo", "compania","serviciosRealizados"}) // ¡Agregá esto!
-public abstract class Usuario extends Identificable implements CapacidadServicio, CapacidadVerSusDatos {
-
+public abstract class Usuario extends Identificable  {
+//implements CapacidadServicio, CapacidadVerSusDatos
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 

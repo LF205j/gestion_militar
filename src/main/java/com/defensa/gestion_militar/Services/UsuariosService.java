@@ -59,7 +59,7 @@ public class UsuariosService {
                 .collect(Collectors.toList());
     }
 
-    public UsuarioDTO obtenerUserPorId(Long idAdmin,Long idUser){
+    public UsuarioDTO obtenerUserPorId(Long idUser){
 //        Usuario ejecutor = repo_user.findById(idAdmin)
 //                .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
 //
@@ -128,32 +128,32 @@ public class UsuariosService {
 //    }
 
     //Long id
-    public void eliminarUsuario(Long idOficial, Long idABorrar ){
-//        if (repo_user.existsById(id)) {
-//            repo_user.deleteById(id);
-//        } else {
-//            throw new RuntimeException("No se pudo eliminar: Usuario no encontrado con ID " + id);
-//        }
-        // 1. Obtener al oficial desde la DB
-        Usuario ejecutor = repo_user.findById(idOficial)
-                .orElseThrow(() -> new RuntimeException("Oficial no encontrado"));
-
-        // 2. ¿Tiene la capacidad de gestionar usuarios?
-        if (ejecutor instanceof CapacidadGestionUsuario oficialConMando) {
-
-            // 3. Le pedimos al oficial que valide la operación (Lógica de Negocio)
-            oficialConMando.eliminarUsuario(idABorrar);
-
-            // 4. Si llegamos aquí sin excepciones, operamos en la DB (Lógica de Persistencia)
-            if (repo_user.existsById(idABorrar)) {
-                repo_user.deleteById(idABorrar);
-            } else {
-                throw new RuntimeException("El usuario que desea borrar ya no existe.");
-            }
-
+    public void eliminarUsuario( Long idABorrar ){
+        if (repo_user.existsById(idABorrar)) {
+            repo_user.deleteById(idABorrar);
         } else {
-            throw new RuntimeException("Acceso Denegado: Usted no tiene rango para gestionar usuarios.");
+            throw new RuntimeException("No se pudo eliminar: Usuario no encontrado con ID " + idABorrar);
         }
+        // 1. Obtener al oficial desde la DB
+//        Usuario ejecutor = repo_user.findById(idOficial)
+//                .orElseThrow(() -> new RuntimeException("Oficial no encontrado"));
+//
+//        // 2. ¿Tiene la capacidad de gestionar usuarios?
+//        if (ejecutor instanceof CapacidadGestionUsuario oficialConMando) {
+//
+//            // 3. Le pedimos al oficial que valide la operación (Lógica de Negocio)
+//            oficialConMando.eliminarUsuario(idABorrar);
+//
+//            // 4. Si llegamos aquí sin excepciones, operamos en la DB (Lógica de Persistencia)
+//            if (repo_user.existsById(idABorrar)) {
+//                repo_user.deleteById(idABorrar);
+//            } else {
+//                throw new RuntimeException("El usuario que desea borrar ya no existe.");
+//            }
+//
+//        } else {
+//            throw new RuntimeException("Acceso Denegado: Usted no tiene rango para gestionar usuarios.");
+//        }
     }
     public void eliminarUsuarioSuboficial(Long id) {
         // 1. Buscamos el usuario por ID
@@ -203,53 +203,53 @@ public class UsuariosService {
         }
 
     }
-    public void editarUsuario(Long idAdmin,Long idUsuarioAEditar, UsuarioDTO dto,String nuevaPass){
-//        Usuario usuario=repo_user.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-//        usuario.setNombre(dto.getNombre());
-//        usuario.setApellido(dto.getApellido());
-//        usuario.setEmail(dto.getEmail());
-//
-//        String tipoRecibido = dto.getTipoUsuario().toUpperCase();
-//        List<String> rangosValidos = List.of("SOLDADO", "SUBOFICIAL", "OFICIAL");
-//
-//        if (!rangosValidos.contains(tipoRecibido)) {
-//            throw new RuntimeException("Rango no permitido. Debe ser: SOLDADO, SUBOFICIAL u OFICIAL.");
-//        }
-//
-//        // 4. Actualizar contraseña solo si se envió una nueva
-//        if (nuevaPass != null && !nuevaPass.isBlank()) {
-//            usuario.setContrasenia(passwordEncoder.encode(nuevaPass));
-//        }
-//        repo_user.save(usuario);
-        Usuario ejecutor = repo_user.findById(idAdmin)
-                .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
+    public void editarUsuario(Long idUsuarioAEditar, UsuarioDTO dto,String nuevaPass){
+        Usuario usuario=repo_user.findById(idUsuarioAEditar).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        usuario.setNombre(dto.getNombre());
+        usuario.setApellido(dto.getApellido());
+        usuario.setEmail(dto.getEmail());
 
-        // 2. Verificamos si tiene la capacidad de gestionar usuarios
-        if (ejecutor instanceof CapacidadGestionUsuario oficialConMando) {
+        String tipoRecibido = dto.getTipoUsuario().toUpperCase();
+        List<String> rangosValidos = List.of("SOLDADO", "SUBOFICIAL", "OFICIAL");
 
-            // 3. Buscamos el usuario real en la base de datos
-            Usuario usuarioExistente = repo_user.findById(idUsuarioAEditar)
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-            // 4. La entidad Oficial valida la operación
-            oficialConMando.editarUsuario(idUsuarioAEditar, dto, nuevaPass);
-
-            // 5. Aplicamos los cambios técnicos (Persistencia)
-            usuarioExistente.setNombre(dto.getNombre());
-            usuarioExistente.setApellido(dto.getApellido());
-            usuarioExistente.setEmail(dto.getEmail());
-            // Aquí podrías cambiar el Discriminador si fuera necesario,
-            // pero usualmente el tipo de usuario no cambia así de simple en JPA.
-
-            if (nuevaPass != null && !nuevaPass.isBlank()) {
-                usuarioExistente.setContrasenia(passwordEncoder.encode(nuevaPass));
-            }
-
-            repo_user.save(usuarioExistente);
-
-        } else {
-            throw new RuntimeException("Acceso Denegado: No tiene permisos para editar usuarios.");
+        if (!rangosValidos.contains(tipoRecibido)) {
+            throw new RuntimeException("Rango no permitido. Debe ser: SOLDADO, SUBOFICIAL u OFICIAL.");
         }
+
+        // 4. Actualizar contraseña solo si se envió una nueva
+        if (nuevaPass != null && !nuevaPass.isBlank()) {
+            usuario.setContrasenia(passwordEncoder.encode(nuevaPass));
+        }
+        repo_user.save(usuario);
+//        Usuario ejecutor = repo_user.findById(idAdmin)
+//                .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
+//
+//        // 2. Verificamos si tiene la capacidad de gestionar usuarios
+//        if (ejecutor instanceof CapacidadGestionUsuario oficialConMando) {
+//
+//            // 3. Buscamos el usuario real en la base de datos
+//            Usuario usuarioExistente = repo_user.findById(idUsuarioAEditar)
+//                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+//
+//            // 4. La entidad Oficial valida la operación
+//            oficialConMando.editarUsuario(idUsuarioAEditar, dto, nuevaPass);
+//
+//            // 5. Aplicamos los cambios técnicos (Persistencia)
+//            usuarioExistente.setNombre(dto.getNombre());
+//            usuarioExistente.setApellido(dto.getApellido());
+//            usuarioExistente.setEmail(dto.getEmail());
+//            // Aquí podrías cambiar el Discriminador si fuera necesario,
+//            // pero usualmente el tipo de usuario no cambia así de simple en JPA.
+//
+//            if (nuevaPass != null && !nuevaPass.isBlank()) {
+//                usuarioExistente.setContrasenia(passwordEncoder.encode(nuevaPass));
+//            }
+//
+//            repo_user.save(usuarioExistente);
+//
+//        } else {
+//            throw new RuntimeException("Acceso Denegado: No tiene permisos para editar usuarios.");
+//        }
     }
 
 
@@ -308,7 +308,7 @@ public class UsuariosService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado en sesión"));
 
         // 2. EJECUTAR CAPACIDAD: La entidad valida si puede verla
-        usuario.verMiCuartel();
+        //usuario.verMiCuartel();
 
         // 3. RETORNAR DTO: Usamos el mapper sobre la compañía del usuario
         return cuartelMapper.toDTO(usuario.getCuartel());
@@ -339,7 +339,7 @@ public class UsuariosService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado en sesión"));
 
         // 2. EJECUTAR CAPACIDAD: La entidad valida si puede verla
-        usuario.verMiCompania();
+        //usuario.verMiCompania();
 
         // 3. RETORNAR DTO: Usamos el mapper sobre la compañía del usuario
         return companiaMapper.toDTO(usuario.getCompania());
@@ -370,7 +370,7 @@ public class UsuariosService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado en sesión"));
 
         // 2. EJECUTAR CAPACIDAD: La entidad valida si puede verla
-        usuario.verMiCuerpo();
+        //usuario.verMiCuerpo();
 
         // 3. RETORNAR DTO: Usamos el mapper sobre la compañía del usuario
         return cuerpoMapper.toDTO(usuario.getCuerpo());
