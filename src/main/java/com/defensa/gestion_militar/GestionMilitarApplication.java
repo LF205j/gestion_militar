@@ -52,5 +52,9 @@ public class GestionMilitarApplication implements CommandLineRunner {
 
 		List<Cuerpo>cuerpos=repoCuerpos.findAll();
 		cuerpos.stream().forEach(cuerpos1 -> System.out.println(cuerpos1.toString()));
+
+		for (Usuario user: listaUsuarios){
+			user.toString();
+		}
 	}
 }

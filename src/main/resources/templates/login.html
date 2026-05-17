@@ -1,14 +1,84 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<html lang="es">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Gestion Militar - Iniciar Sesión</title>-->
+<!--    <link rel="stylesheet" href="/css/Login.css">-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">-->
+<!--    <title>PeliMarket Login</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="login-container">-->
+<!--    <section class="branding-side">-->
+<!--        <div class="branding-content">-->
+<!--            <div class="logo-container">-->
+<!--                <div class="logo-icon"><i class="fas fa-medal"></i></div>-->
+<!--                <h1>Gestion Militar</h1>-->
+<!--            </div>-->
+<!--            <h2>Tu Sistema de Gestion Militar</h2>-->
+<!--            <p>Soldados,Cuarteles,Cuerpos,Companias y Servicios</p>-->
+<!--        </div>-->
+<!--    </section>-->
+
+<!--    <section class="form-side">-->
+<!--        <div class="login-card">-->
+<!--            <h3>Iniciar Sesión</h3>-->
+<!--            <p class="subtitle">Ingresa tus credenciales para acceder a tu biblioteca audiovisual</p>-->
+
+<!--            <form th:action="@{/login}" method="post">-->
+
+<!--                <div class="input-group">-->
+<!--                    <label>Email</label>-->
+<!--                    <div class="input-wrapper">-->
+<!--                        <i class="far fa-user"></i>-->
+<!--                        <input type="text" name="email" placeholder="Tu usuario" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="input-group">-->
+<!--                    <label>Contraseña</label>-->
+<!--                    <div class="input-wrapper">-->
+<!--                        <i class="fas fa-lock"></i>-->
+<!--                        <input type="password" name="contrasenia" placeholder="••••••••" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="form-options">-->
+<!--                    <label><input type="checkbox" name="remember-me"> Recordarme</label>-->
+<!--                    <a href="#">¿Olvidaste tu contraseña?</a>-->
+<!--                </div>-->
+
+<!--                <button type="submit" class="btn-primary">Iniciar Sesión</button>-->
+<!--            </form>-->
+
+<!--            <p class="footer-text">¿No tienes una cuenta? <a href="#">Regístrate aquí</a></p>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Gestion Militar - Iniciar Sesión</title>
     <link rel="stylesheet" href="/css/Login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>PeliMarket Login</title>
+
+    <!-- SCRIPT PARA EVITAR EL BOTÓN ATRÁS -->
+    <script type="text/javascript">
+        // Empuja el historial hacia adelante inmediatamente
+        window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
+    </script>
 </head>
-<body>
+<!-- Eventos añadidos al body para ejecutar la función al cargar o mostrar la página -->
+<body onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
+
 <div class="login-container">
     <section class="branding-side">
         <div class="branding-content">
@@ -17,16 +87,25 @@
                 <h1>Gestion Militar</h1>
             </div>
             <h2>Tu Sistema de Gestion Militar</h2>
-            <p>Soldados,Cuarteles,Cuerpos,Companias y Servicios</p>
+            <p>Soldados, Cuarteles, Cuerpos, Compañías y Servicios</p>
         </div>
     </section>
 
     <section class="form-side">
         <div class="login-card">
             <h3>Iniciar Sesión</h3>
-            <p class="subtitle">Ingresa tus credenciales para acceder a tu biblioteca audiovisual</p>
+            <!-- Ajustado el texto para que coincida con tu sistema militar -->
+            <p class="subtitle">Ingresa tus credenciales para acceder al sistema de gestión</p>
 
             <form th:action="@{/login}" method="post">
+                <!-- Mostrar mensaje de error si el login falla -->
+                <div th:if="${param.error}" style="color: red; margin-bottom: 10px;">
+                    Usuario o contraseña incorrectos.
+                </div>
+                <!-- Mostrar mensaje si se cerró sesión correctamente -->
+                <div th:if="${param.logout}" style="color: green; margin-bottom: 10px;">
+                    Has cerrado sesión exitosamente.
+                </div>
 
                 <div class="input-group">
                     <label>Email</label>
@@ -40,6 +119,7 @@
                     <label>Contraseña</label>
                     <div class="input-wrapper">
                         <i class="fas fa-lock"></i>
+                        <!-- El nombre coincide con tu DTO (contrasenia) -->
                         <input type="password" name="contrasenia" placeholder="••••••••" required>
                     </div>
                 </div>

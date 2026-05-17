@@ -69,23 +69,28 @@ public class OficialService implements CapacidadOficial {
 
     @Override
     public void agregarUsuario(UsuarioDTO dto) {
-        Usuario entidad;
-        if (dto!=null){
-
-            if ("OFICIAL".equalsIgnoreCase(dto.getTipoUsuario())) {
-                entidad = new Oficial();
-            } else if ("SUBOFICIAL".equalsIgnoreCase(dto.getTipoUsuario())) {
-                entidad = new Suboficial();
-            } else {
-                entidad = new Soldado();
-            }
-            entidad.setNombre(dto.getNombre());
-            entidad.setApellido(dto.getApellido());
-            entidad.setEmail(dto.getEmail());
-            // Se usa el passwordEncoder inyectado en el servicio
-            entidad.setContrasenia(passwordEncoder.encode("12345"));
-            repoUsuarios.save(entidad);
+        if (dto == null || dto.getTipoUsuario() == null) {
+            return; // O lanzar una excepción personalizada
         }
+
+        Usuario entidad;
+
+        // Usamos un switch con el Enum, que es más legible y seguro
+        switch (dto.getTipoUsuario()) {
+            case OFICIAL -> entidad = new Oficial(); //[cite: 10]
+            case SUBOFICIAL -> entidad = new Suboficial(); //[cite: 8]
+            case SOLDADO -> entidad = new Soldado(); //[cite: 9]
+            default -> throw new IllegalArgumentException("Tipo de usuario no soportado: " + dto.getTipoUsuario());
+        }
+
+        entidad.setNombre(dto.getNombre());
+        entidad.setApellido(dto.getApellido());
+        entidad.setEmail(dto.getEmail());
+
+        // IMPORTANTE: Seguimos usando el PasswordEncoder para guardar el hash
+        entidad.setContrasenia(passwordEncoder.encode("12345"));
+
+        repoUsuarios.save(entidad);
     }
 
     @Override

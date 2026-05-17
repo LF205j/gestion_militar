@@ -45,24 +45,49 @@ public class SecurityConfig {
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-            .csrf(csrf -> csrf.disable()) // Mantener deshabilitado para tu lógica manual
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                    // Permitimos acceso a login, logout y recursos estáticos
                     .requestMatchers("/login", "/logout", "/css/**", "/js/**", "/img/**").permitAll()
-                    .anyRequest().permitAll() // Cambiar a .authenticated() cuando quieras activar seguridad total
+                    .requestMatchers("/api/home/**").authenticated() // Protege el home
+                    .anyRequest().authenticated()
             )
-            // CONFIGURACIÓN DEL LOGOUT
+            // Deshabilitar caché para que al dar "atrás" no se vea la página anterior
+            .headers(headers -> headers
+                    .cacheControl(cache -> cache.disable())
+            )
             .logout(logout -> logout
-                    .logoutUrl("/logout")               // La URL que activará el cierre de sesión
-                    .logoutSuccessUrl("/login?logout")  // A dónde redirige tras salir
-                    .invalidateHttpSession(true)        // Borra la sesión del servidor
-                    .clearAuthentication(true)          // Limpia los datos de autenticación
-                    .deleteCookies("JSESSIONID")        // Borra la cookie del navegador
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login?logout")
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID")
                     .permitAll()
             );
 
     return http.build();
 }
+//ESTE ES EL QUE ESTA BIEN
+
+//public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//    http
+//            .csrf(csrf -> csrf.disable()) // Mantener deshabilitado para tu lógica manual
+//            .authorizeHttpRequests(auth -> auth
+//                    // Permitimos acceso a login, logout y recursos estáticos
+//                    .requestMatchers("/login", "/logout", "/css/**", "/js/**", "/img/**").permitAll()
+//                    .anyRequest().permitAll() // Cambiar a .authenticated() cuando quieras activar seguridad total
+//            )
+//            // CONFIGURACIÓN DEL LOGOUT
+//            .logout(logout -> logout
+//                    .logoutUrl("/logout")               // La URL que activará el cierre de sesión
+//                    .logoutSuccessUrl("/login?logout")  // A dónde redirige tras salir
+//                    .invalidateHttpSession(true)        // Borra la sesión del servidor
+//                    .clearAuthentication(true)          // Limpia los datos de autenticación
+//                    .deleteCookies("JSESSIONID")        // Borra la cookie del navegador
+//                    .permitAll()
+//            );
+//
+//    return http.build();
+//}
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //        http

@@ -169,58 +169,85 @@ public class UsuariosService {
         }
     }
 
-    public void guardarUsuario(Long idAdmin,UsuarioDTO dto) {
+//    public void guardarUsuario(Long idAdmin,UsuarioDTO dto) {
+//        Usuario ejecutor = repo_user.findById(idAdmin)
+//                .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
+//
+//        // 2. Verificamos si tiene la capacidad de gestionar cuarteles
+//        if (ejecutor instanceof CapacidadGestionUsuario oficialConMando) {
+//
+//
+//            Usuario entidad;
+//
+//            // 1. Instanciamos la clase específica
+//            if ("OFICIAL".equalsIgnoreCase(dto.getTipoUsuario())) {
+//                entidad = new Oficial();
+//            } else if ("SUBOFICIAL".equalsIgnoreCase(dto.getTipoUsuario())) {
+//                entidad = new Suboficial();
+//            } else {
+//                entidad = new Soldado();
+//            }
+//
+//            // 2. Seteamos los campos comunes (aprovechando la herencia)
+//            entidad.setNombre(dto.getNombre());
+//            entidad.setApellido(dto.getApellido());
+//            entidad.setEmail(dto.getEmail());
+//            // Se usa el passwordEncoder inyectado en el servicio
+//            entidad.setContrasenia(passwordEncoder.encode("12345"));
+////            oficialConMando.guardarUsuario(entidad);
+//            // 3. Persistencia
+//            repo_user.save(entidad);
+//
+//        } else {
+//            throw new RuntimeException("Acceso Denegado: Su rango no permite crear cuarteles.");
+//        }
+//
+//    }
+    public void guardarUsuario(Long idAdmin, UsuarioDTO dto) {
         Usuario ejecutor = repo_user.findById(idAdmin)
                 .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
 
-        // 2. Verificamos si tiene la capacidad de gestionar cuarteles
         if (ejecutor instanceof CapacidadGestionUsuario oficialConMando) {
-
-
             Usuario entidad;
 
-            // 1. Instanciamos la clase específica
-            if ("OFICIAL".equalsIgnoreCase(dto.getTipoUsuario())) {
-                entidad = new Oficial();
-            } else if ("SUBOFICIAL".equalsIgnoreCase(dto.getTipoUsuario())) {
-                entidad = new Suboficial();
-            } else {
-                entidad = new Soldado();
+            // Usamos el Enum directamente del DTO para instanciar la subclase correcta[cite: 6, 13]
+            switch (dto.getTipoUsuario()) {
+                case OFICIAL -> entidad = new Oficial();
+                case SUBOFICIAL -> entidad = new Suboficial();
+                case SOLDADO -> entidad = new Soldado();
+                default -> throw new IllegalArgumentException("Tipo de usuario no válido");
             }
 
-            // 2. Seteamos los campos comunes (aprovechando la herencia)
             entidad.setNombre(dto.getNombre());
             entidad.setApellido(dto.getApellido());
             entidad.setEmail(dto.getEmail());
-            // Se usa el passwordEncoder inyectado en el servicio
+
+            // El passwordEncoder ya está inyectado en tu servicio[cite: 15]
             entidad.setContrasenia(passwordEncoder.encode("12345"));
-//            oficialConMando.guardarUsuario(entidad);
-            // 3. Persistencia
+
             repo_user.save(entidad);
-
         } else {
-            throw new RuntimeException("Acceso Denegado: Su rango no permite crear cuarteles.");
+            throw new RuntimeException("Acceso Denegado: Su rango no permite crear usuarios.");
         }
-
     }
-    public void editarUsuario(Long idUsuarioAEditar, UsuarioDTO dto,String nuevaPass){
-        Usuario usuario=repo_user.findById(idUsuarioAEditar).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        usuario.setNombre(dto.getNombre());
-        usuario.setApellido(dto.getApellido());
-        usuario.setEmail(dto.getEmail());
-
-        String tipoRecibido = dto.getTipoUsuario().toUpperCase();
-        List<String> rangosValidos = List.of("SOLDADO", "SUBOFICIAL", "OFICIAL");
-
-        if (!rangosValidos.contains(tipoRecibido)) {
-            throw new RuntimeException("Rango no permitido. Debe ser: SOLDADO, SUBOFICIAL u OFICIAL.");
-        }
-
-        // 4. Actualizar contraseña solo si se envió una nueva
-        if (nuevaPass != null && !nuevaPass.isBlank()) {
-            usuario.setContrasenia(passwordEncoder.encode(nuevaPass));
-        }
-        repo_user.save(usuario);
+//    public void editarUsuario(Long idUsuarioAEditar, UsuarioDTO dto,String nuevaPass){
+//        Usuario usuario=repo_user.findById(idUsuarioAEditar).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+//        usuario.setNombre(dto.getNombre());
+//        usuario.setApellido(dto.getApellido());
+//        usuario.setEmail(dto.getEmail());
+//
+//        String tipoRecibido = dto.getTipoUsuario().toUpperCase();
+//        List<String> rangosValidos = List.of("SOLDADO", "SUBOFICIAL", "OFICIAL");
+//
+//        if (!rangosValidos.contains(tipoRecibido)) {
+//            throw new RuntimeException("Rango no permitido. Debe ser: SOLDADO, SUBOFICIAL u OFICIAL.");
+//        }
+//
+//        // 4. Actualizar contraseña solo si se envió una nueva
+//        if (nuevaPass != null && !nuevaPass.isBlank()) {
+//            usuario.setContrasenia(passwordEncoder.encode(nuevaPass));
+//        }
+//        repo_user.save(usuario);
 //        Usuario ejecutor = repo_user.findById(idAdmin)
 //                .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
 //
@@ -250,6 +277,24 @@ public class UsuariosService {
 //        } else {
 //            throw new RuntimeException("Acceso Denegado: No tiene permisos para editar usuarios.");
 //        }
+//    }
+
+    public void editarUsuario(Long idUsuarioAEditar, UsuarioDTO dto, String nuevaPass) {
+        Usuario usuario = repo_user.findById(idUsuarioAEditar)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuario.setNombre(dto.getNombre());
+        usuario.setApellido(dto.getApellido());
+        usuario.setEmail(dto.getEmail());
+
+        // La validación de 'rangosValidos' ya no es necesaria
+        // El Enum garantiza que el tipo sea correcto desde la entrada del DTO
+
+        if (nuevaPass != null && !nuevaPass.isBlank()) {
+            usuario.setContrasenia(passwordEncoder.encode(nuevaPass));
+        }
+
+        repo_user.save(usuario);
     }
 
 

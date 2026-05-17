@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.security.core.Authentication;
 import java.util.List;
 
 @Controller
@@ -30,7 +30,12 @@ public class AuthController {
      UsuariosService usuariosService;
 
     @GetMapping("/login")
-    public String mostrarLogin() {
+    public String mostrarLogin(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Como tu ruta de home requiere un ID, podemos obtenerlo del usuario logueado
+            Usuario usuario = usuariosService.obtenerUsuarioLogueado();
+            return "redirect:/api/home/" + usuario.getId();
+        }
         return "Login"; // Busca Login.html en templates
     }
 
@@ -46,11 +51,9 @@ public class AuthController {
         // 1. Buscamos el usuario (entidad)
         Usuario usuario = usuariosService.validarLogin(usuarioDto.getEmail(), usuarioDto.getContrasenia());
 
-        // 2. Creamos el Rol con el formato que Spring Security exige para hasRole
-        // Esto generará: "ROLE_OFICIAL", "ROLE_SOLDADO", etc.
-        String nombreRol = "ROLE_" + usuario.getClass().getSimpleName().toUpperCase();
+        // Usamos el Enum para definir el rol de forma más segura
+        String nombreRol = "ROLE_" + usuario.getTipoUsuario().name();
 
-        // 3. Creamos la autoridad
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(nombreRol));
 
         // 4. Autenticamos

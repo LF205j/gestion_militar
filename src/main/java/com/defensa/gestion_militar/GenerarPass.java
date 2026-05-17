@@ -7,7 +7,7 @@ public class GenerarPass
     public static void main(String[] args) {
 
         BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-        System.out.println(encoder.encode("SUBOFICIAL"));
+        System.out.println(encoder.encode("sub123"));
         //$2a$10$HX9EP3uCNFtGsdz5OWi6BexeZf6Mw7RPXdya41pwOsn5iNQeJE/XO
 
     }

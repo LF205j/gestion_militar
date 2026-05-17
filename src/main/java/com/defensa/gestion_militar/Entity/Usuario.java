@@ -49,6 +49,10 @@ public abstract class Usuario extends Identificable  {
     @OneToMany(mappedBy = "usuario")
     private List<RealizaServicio> serviciosRealizados;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario", insertable = false, updatable = false)
+    private Tipo_Usuario tipoUsuario;
+
     public abstract void mostrarMenu();
 
 }

@@ -19,7 +19,7 @@ public class UsuarioMapper {
                 .nombre(usuario.getNombre())
                 .apellido(usuario.getApellido())
                 .email(usuario.getEmail())
-                .tipoUsuario(usuario.getClass().getSimpleName().toUpperCase())
+                .tipoUsuario(usuario.getTipoUsuario())
                 .nombreCuartel(usuario.getCuartel() != null ? usuario.getCuartel().getNombre_cuartel() : "Sin asignar")
                 .nombreCuerpo(usuario.getCuerpo() != null ? usuario.getCuerpo().getDenominacion_cuerpo() : "Sin asignar")
                 .nombreCompania(usuario.getCompania() != null ? usuario.getCompania().getActividad_principal() : "Sin asignar")
