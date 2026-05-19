@@ -42,23 +42,7 @@ public class CompaniaService {
         return repoCompanias.findById(idCompania)
                 .map(companiaMapper::toDTO)
                 .orElse(null);
-//        Usuario ejecutor = repoUsuarios.findById(idAdmin)
-//                .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
-//
-//        // 2. Verificamos si tiene la capacidad
-//        if (ejecutor instanceof CapacidadGestionCompania oficialConMando) {
-//
-//            // 3. El Oficial valida la intención de consulta
-//            oficialConMando.consultarCompaniaPorId(idCompania);
-//
-//            // 4. Ejecutamos la búsqueda técnica (tu método original)
-//            return repoCompanias.findById(idCompania)
-//                    .map(companiaMapper::toDTO)
-//                    .orElseThrow(() -> new RuntimeException("Cuerpo no encontrado con ID: " + idCompania));
-//
-//        } else {
-//            throw new RuntimeException("Acceso Denegado: No tiene permisos para consultar cuerpos militares.");
-//        }
+
     }
     public void eliminarCompania(Long idAdmin,Long id){
 //        if (!repoCompanias.existsById(id)){
@@ -91,24 +75,6 @@ public class CompaniaService {
 
         repoCompanias.save(entidad);
 
-//        Usuario ejecutor = repoUsuarios.findById(idAdmin)
-//                .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
-//
-//        // 2. Verificamos si tiene la capacidad de gestionar cuarteles
-//        if (ejecutor instanceof CapacidadGestionCompania oficialConMando) {
-//
-//            // 3. La entidad valida los datos del DTO según reglas militares
-//            oficialConMando.agregarCompania(dto);
-//
-//            // 4. Si no hubo excepciones, procedemos con la persistencia
-//            Compania entidad = Compania.builder().actividad_principal(dto.getActividadPrincipal())
-//                    .build();
-//
-//            repoCompanias.save(entidad);
-//
-//        } else {
-//            throw new RuntimeException("Acceso Denegado: Su rango no permite crear cuarteles.");
-//        }
     }
 
     // Convertir de Entidad a DTO para MOSTRAR
@@ -121,26 +87,5 @@ public class CompaniaService {
         Compania compania=repoCompanias.findById(idCompania).orElseThrow(() -> new RuntimeException("Compania no encontrado"));;
         compania.setActividad_principal(dto.getActividadPrincipal());
         repoCompanias.save(compania);
-//        Usuario ejecutor = repoUsuarios.findById(idAdmin)
-//                .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
-//
-//        // 2. Verificar capacidad
-//        if (ejecutor instanceof CapacidadGestionCompania oficialConMando) {
-//
-//            // 3. Buscar la entidad a modificar
-//            Compania companiaExistente = repoCompanias.findById(idCompania)
-//                    .orElseThrow(() -> new RuntimeException("Cuerpo no encontrado"));
-//
-//            // 4. VALIDACIÓN: El Oficial comprueba si la edición es lícita
-//            oficialConMando.editarCompania(idCompania, dto);
-//
-//            // 5. PERSISTENCIA: Aplicamos los cambios que venían en el DTO
-//            companiaExistente.setActividad_principal(dto.getActividadPrincipal());
-//
-//            repoCompanias.save(companiaExistente);
-//
-//        } else {
-//            throw new RuntimeException("No tiene permisos para editar cuerpos militares.");
-//        }
     }
 }

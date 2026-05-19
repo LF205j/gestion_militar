@@ -60,23 +60,6 @@ public class UsuariosService {
     }
 
     public UsuarioDTO obtenerUserPorId(Long idUser){
-//        Usuario ejecutor = repo_user.findById(idAdmin)
-//                .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
-//
-//        // 2. Verificamos si tiene la capacidad
-//        if (ejecutor instanceof CapacidadGestionUsuario oficialConMando) {
-//
-//            // 3. El Oficial valida la intención de consulta
-//            oficialConMando.consultarUsuario(idUser);
-//
-//            // 4. Ejecutamos la búsqueda técnica (tu método original)
-//            return repo_user.findById(idUser)
-//                    .map(usuarioMapper::toDTO)
-//                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + idUser));
-//
-//        } else {
-//            throw new RuntimeException("Acceso Denegado: No tiene permisos para consultar usuario militares.");
-//        }
         return repo_user.findById(idUser)
                 .map(usuarioMapper::toDTO)
                 .orElse(null);
@@ -91,9 +74,6 @@ public class UsuariosService {
         } else {
             email = principal.toString();
         }
-
-        // 2. Buscamos el objeto Usuario completo en la base de datos
-        // Nota: Asegúrate de que tu repo_user tenga el método findByEmail
         return repo_user.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("No se encontró el usuario logueado en la base de datos."));
     }

@@ -127,19 +127,19 @@
 
     <form th:action="@{/api/oficial/consultar/usuario}" th:object="${usuarioDto}" method="post">
         <div class="form-group-custom">
-            <label>Código ID del Cuerpo:</label>
+            <label>Código ID del Usuario:</label>
             <input type="number" th:field="*{id}" class="input-militar" placeholder="Ej: 101" required>
         </div>
         <button type="submit" class="btn-buscar-militar">Consultar Registro</button>
     </form>
 
     <div th:if="${usuario != null}" class="militar-result-card">
-        <h3>Ficha del Cuerpo Militar</h3>
-        <p><strong>Número de Registro:</strong> <span th:text="${usuario.id}"></span></p>
+        <h3>Ficha del Usuario Militar</h3>
+        <p><strong>Número de Usuario:</strong> <span th:text="${usuario.id}"></span></p>
         <p><strong>Nombre Usuario:</strong> <span th:text="${usuario.nombre}"></span> </p>
         <p><strong>Apellido Usuario:</strong> <span th:text="${usuario.apellido}"></span> </p>
-        <p><strong>Número de Registro:</strong> <span th:text="${usuario.email}"></span></p>
-        <p><strong>Número de Registro:</strong> <span th:text="${usuario.tipoUsuario}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${usuario.email}"></span></p>
+        <p><strong>Tipo Usuario:</strong> <span th:text="${usuario.tipoUsuario}"></span></p>
     </div>
 
     <div th:if="${error != null}" class="error-msg-militar">

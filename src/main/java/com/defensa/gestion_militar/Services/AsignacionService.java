@@ -60,29 +60,6 @@ public class AsignacionService {
         Cuartel cuartel=repoCuartel.findById(idCuartel).orElseThrow(() -> new RuntimeException("Cuartel no encontrado"));;
         usuario.setCuartel(cuartel);
         repoUsuario.save(usuario);
-//        Usuario ejecutor = repoUsuario.findById(idOficialLogueado)
-//                .orElseThrow(() -> new RuntimeException("Oficial ejecutor no encontrado"));
-//
-//        // 2. Verificamos si tiene la capacidad de gestionar cuarteles
-//        if (ejecutor instanceof CapacidadGestionCuartel oficialConMando) {
-//
-//            // 3. La entidad Oficial valida la orden
-//            oficialConMando.asignarCuartel(idUsuario, idCuartel);
-//
-//            // 4. Si la entidad no lanzó excepción, ejecutamos la lógica técnica
-//            Usuario usuario = repoUsuario.findById(idUsuario)
-//                    .orElseThrow(() -> new RuntimeException("Usuario a asignar no encontrado"));
-//
-//            Cuartel cuartel = repoCuartel.findById(idCuartel)
-//                    .orElseThrow(() -> new RuntimeException("Cuartel de destino no encontrado"));
-//
-//            usuario.setCuartel(cuartel);
-//            repoUsuario.save(usuario);
-//
-//        } else {
-//            throw new RuntimeException("Acceso Denegado: Tu rango no permite realizar asignaciones de cuartel.");
-//
-//        }
     }
     public void asignarCompaniaSuboficial(Long idEjecutor, Long idUser, Long idCompania) {
         Usuario ejecutor = repoUsuario.findById(idEjecutor).orElseThrow();
@@ -110,32 +87,6 @@ public class AsignacionService {
         Compania compania=repoCompania.findById(idCompania).orElseThrow(() -> new RuntimeException("Cuartel no encontrado"));;
         usuario.setCompania(compania);
         repoUsuario.save(usuario);
-//        Usuario ejecutor = repoUsuario.findById(idAdmin)
-//                .orElseThrow(() -> new RuntimeException("Oficial ejecutor no encontrado"));
-//
-//        // 2. Verificamos si tiene la capacidad de gestionar cuarteles
-//        if (ejecutor instanceof CapacidadGestionCompania oficialConMando) {
-//
-//            // 3. La entidad Oficial valida la orden
-//            oficialConMando.asignarCompania(idUsuario, idCompania);
-//
-//            // 4. Si la entidad no lanzó excepción, ejecutamos la lógica técnica
-//            Usuario usuario = repoUsuario.findById(idUsuario)
-//                    .orElseThrow(() -> new RuntimeException("Usuario a asignar no encontrado"));
-//
-//            Compania compania = repoCompania.findById(idCompania)
-//                    .orElseThrow(() -> new RuntimeException("Compania de destino no encontrado"));
-//
-//
-//            usuario.setCompania(compania);
-//            repoUsuario.save(usuario);
-//
-//        } else {
-//            throw new RuntimeException("Acceso Denegado: Tu rango no permite realizar asignaciones de cuartel.");
-//
-//        }
-
-
     }
     public void AsignarCuerpo(Long idUsuario,Long idCuerpo){
         Usuario usuario=repoUsuario.findById(idUsuario).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));;
@@ -143,59 +94,23 @@ public class AsignacionService {
         Cuerpo cuerpo=repoCuerpo.findById(idCuerpo).orElseThrow(() -> new RuntimeException("Cuartel no encontrado"));;
         usuario.setCuerpo(cuerpo);
         repoUsuario.save(usuario);
-//        Usuario ejecutor = repoUsuario.findById(idAdmin)
-//                .orElseThrow(() -> new RuntimeException("Oficial ejecutor no encontrado"));
-//
-//        // 2. Verificamos si tiene la capacidad de gestionar cuarteles
-//        if (ejecutor instanceof CapacidadGestionCuerpo oficialConMando) {
-//
-//            // 3. La entidad Oficial valida la orden
-//            oficialConMando.asignarCuerpo(idUsuario, idCuerpo);
-//
-//            // 4. Si la entidad no lanzó excepción, ejecutamos la lógica técnica
-//            Usuario usuario = repoUsuario.findById(idUsuario)
-//                    .orElseThrow(() -> new RuntimeException("Usuario a asignar no encontrado"));
-//
-//            Cuerpo cuerpo = repoCuerpo.findById(idCuerpo)
-//                    .orElseThrow(() -> new RuntimeException("Cuerpo de destino no encontrado"));
-//
-//
-//            usuario.setCuerpo(cuerpo);
-//            repoUsuario.save(usuario);
-//
-//        } else {
-//            throw new RuntimeException("Acceso Denegado: Tu rango no permite realizar asignaciones de cuartel.");
-//
-//        }
-
     }
     public void AsignarServicio(Long idAdmin,Long idUsuario,Long idServicio){
-//        Usuario usuario=repoUsuario.findById(idUsuario).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));;
-//
-//        Servicios servicio=repoServicio.findById(idServicio).orElseThrow(() -> new RuntimeException("Cuartel no encontrado"));;
-//        RealizaServicio realizaServicio=new RealizaServicio();
-//        realizaServicio.setUsuario(usuario);
-//        realizaServicio.setServicio(servicio);
-//        realizaServicio.setFechaRealizacion(LocalDate.now()); // Registro de hoy
-//        // realizaServicio.setObservaciones("Asignación manual"); // Si tu entidad lo tiene
-//
-//        // 3. Guardar en el repo de la tabla intermedia
-//        repoRealizarServicio.save(realizaServicio);
         Usuario ejecutor = repoUsuario.findById(idAdmin)
                 .orElseThrow(() -> new RuntimeException("Oficial ejecutor no encontrado"));
 
         // 2. Verificamos si tiene la capacidad de gestionar cuarteles
         if (ejecutor instanceof CapacidadGestionServicio oficialConMando) {
 
-            // 3. La entidad Oficial valida la orden
-            oficialConMando.asignarServicio(idUsuario, idServicio);
-
-            // 4. Si la entidad no lanzó excepción, ejecutamos la lógica técnica
             Usuario usuario = repoUsuario.findById(idUsuario)
                     .orElseThrow(() -> new RuntimeException("Usuario a asignar no encontrado"));
 
             Servicios servicio = repoServicio.findById(idServicio)
                     .orElseThrow(() -> new RuntimeException("Servicio de destino no encontrado"));
+            // 3. La entidad Oficial valida la orden
+            oficialConMando.asignarServicio(idUsuario, idServicio);
+
+
 
             String rangoMilitar = "";
             if (usuario instanceof Oficial) {
