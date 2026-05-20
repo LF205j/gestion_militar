@@ -407,12 +407,8 @@ public class OficialController {
             @ModelAttribute("usuarioDto") UsuarioDTO dto,
             @RequestParam(value = "nuevaPass", required = false) String nuevaPass,
             RedirectAttributes ra) {
-
-
         try {
-            //Usuario usuarioLogueado = usuariosService.obtenerUsuarioLogueado();
-            // Usamos el ID que el usuario escribió en el formulario (dto.getId())
-            // y llamamos a tu función del service
+
             oficialService.editarUsuario(dto.getId(),dto,nuevaPass);
             //usuariosService.editarUsuario(dto.getId(), dto, nuevaPass);
 
@@ -497,7 +493,7 @@ public class OficialController {
             ra.addFlashAttribute("mensajeError", "Error: " + e.getMessage());
         }
         // Redireccionamos a la misma página para limpiar el formulario y mostrar el mensaje
-        return "/oficial/asignacion/asignar/asignar_cuartel";
+        return "redirect:/api/oficial/asignacion/consultar";
     }
     @GetMapping("/asignar/compania")
     public String paginaAsignarCompania(Model model) {
@@ -518,7 +514,7 @@ public class OficialController {
             ra.addFlashAttribute("mensajeError", "Error: " + e.getMessage());
         }
         // Redireccionamos a la misma página para limpiar el formulario y mostrar el mensaje
-        return "/oficial/asignacion/asignar/asignar_compania";
+        return "redirect:/api/oficial/asignacion/consultar";
     }
     @GetMapping("/asignar/cuerpo")
     public String paginaAsignarCuerpo(Model model) {
@@ -539,28 +535,53 @@ public class OficialController {
             ra.addFlashAttribute("mensajeError", "Error: " + e.getMessage());
         }
         // Redireccionamos a la misma página para limpiar el formulario y mostrar el mensaje
-        return "/oficial/asignacion/asignar/asignar_cuerpo";
-    }
-    @GetMapping("/asignar/servicio")
-    public String paginaAsignarServicio(Model model) {
-        // Es necesario pasar un DTO vacío para que el formulario sepa qué campos llenar
-        model.addAttribute("targetAction", "/api/oficial/asignar/servicio");
-        model.addAttribute("asignacionDto", new AsignacionDTO());
-        return "/oficial/asignacion/asignar/asignar_servicio";
+        return "redirect:/api/oficial/asignacion/consultar";
     }
 
+    // =========================================================================
+// 1. EL GET: Se encarga de MOSTRAR la pantalla y pasarle el DTO vacío
+// =========================================================================
+    @GetMapping("/asignar/servicio")
+    public String mostrarAsignarServicio(Model model) {
+        // Le pasamos el DTO para que Thymeleaf pueda hacer el th:object
+        model.addAttribute("asignacionDto", new AsignacionDTO());
+
+        // Apuntamos a la MISMA URL para el envío del formulario
+        model.addAttribute("targetAction", "/api/oficial/asignar/servicio");
+
+        return "/oficial/asignacion/asignar/asignar_servicio"; // Renderiza asignar_servicio.html
+    }
+
+    // =========================================================================
+// 2. EL POST: Se encarga de RECIBIR los datos del formulario y guardarlos
+// =========================================================================
     @PostMapping("/asignar/servicio")
-    public String guardarServicio(@ModelAttribute("asignacionDto") AsignacionDTO dto, RedirectAttributes ra) {
+    public String guardarAsignacionServicio(@ModelAttribute("asignacionDto") AsignacionDTO dto, RedirectAttributes ra) {
         try {
-            Usuario oficial = usuariosService.obtenerUsuarioLogueado();
-            asignacionService.AsignarServicio(oficial.getId(),dto.getUsuarioId(), dto.getIdServicio());
-            // El FlashAttribute sobrevive al redireccionamiento
-            ra.addFlashAttribute("mensajeExito", "El usuario ha sido movido al Cuerpo indicado.");
+            // Validación obligatoria de seguridad
+            if (dto.getUsuarioId() == null || dto.getIdServicio() == null) {
+                ra.addFlashAttribute("mensajeError", "Debe ingresar tanto el ID de Usuario como el de Servicio.");
+                return "/oficial/asignacion/asignar/asignar_servicio";
+            }
+
+            // Armamos el DTO intermedio que requiere tu AsignacionService
+            AsignacionServicioDTO servicioDto = new AsignacionServicioDTO();
+            servicioDto.setIdUsuario(dto.getUsuarioId());
+            servicioDto.setIdServicio(dto.getIdServicio());
+            servicioDto.setFechaRealizacion(java.time.LocalDate.now()); // Fecha actual de la orden
+            servicioDto.setObservaciones(dto.getObservaciones() != null ? dto.getObservaciones() : "Asignación manual por ID");
+
+            // Guardamos en la base de datos (tabla realiza_servicio)
+            asignacionService.AsignarServicio(servicioDto);
+
+            ra.addFlashAttribute("mensajeExito", "¡Éxito! El servicio fue asignado correctamente al usuario.");
+
         } catch (Exception e) {
-            ra.addFlashAttribute("mensajeError", "Error: " + e.getMessage());
+            ra.addFlashAttribute("mensajeError", "Error al asignar el servicio: " + e.getMessage());
         }
-        // Redireccionamos a la misma página para limpiar el formulario y mostrar el mensaje
-        return "/oficial/asignacion/asignar/asignar_servicio";
+
+        // Redirige a donde tengas tu tabla o listado de control
+        return "redirect:/api/oficial/asignacion/consultar";
     }
 
 @GetMapping("/asignacion/consultar")

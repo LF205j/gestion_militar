@@ -48,24 +48,52 @@ public class AuthController {
 
     @PostMapping("/login")
     public String procesarLogin(@ModelAttribute UsuarioRegistroDTO usuarioDto, HttpServletRequest request) {
-        // 1. Buscamos el usuario (entidad)
-        Usuario usuario = usuariosService.validarLogin(usuarioDto.getEmail(), usuarioDto.getContrasenia());
+//        // 1. Buscamos el usuario (entidad)
+//        Usuario usuario = usuariosService.validarLogin(usuarioDto.getEmail(), usuarioDto.getContrasenia());
+//
+//        // Usamos el Enum para definir el rol de forma más segura
+//        String nombreRol = "ROLE_" + usuario.getTipoUsuario().name();
+//
+//        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(nombreRol));
+//
+//        // 4. Autenticamos
+//        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+//                usuario.getEmail(), null, authorities);
+//
+//        SecurityContextHolder.getContext().setAuthentication(auth);
+//
+//        // 5. Guardamos en la sesión
+//        request.getSession(true).setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+//
+//        return "redirect:/api/home/" + usuario.getId();
+        try {
+            // 1. Buscamos y validamos el usuario
+            Usuario usuario = usuariosService.validarLogin(usuarioDto.getEmail(), usuarioDto.getContrasenia());
 
-        // Usamos el Enum para definir el rol de forma más segura
-        String nombreRol = "ROLE_" + usuario.getTipoUsuario().name();
+            // Validación de seguridad por si el servicio devuelve null en vez de lanzar excepción
+            if (usuario == null) {
+                return "redirect:/login?error=true";
+            }
 
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(nombreRol));
+            // 2. Definimos el rol usando el Enum
+            String nombreRol = "ROLE_" + usuario.getTipoUsuario().name();
+            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(nombreRol));
 
-        // 4. Autenticamos
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                usuario.getEmail(), null, authorities);
+            // 3. Autenticamos en el contexto de Spring Security
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                    usuario.getEmail(), null, authorities);
 
-        SecurityContextHolder.getContext().setAuthentication(auth);
+            SecurityContextHolder.getContext().setAuthentication(auth);
 
-        // 5. Guardamos en la sesión
-        request.getSession(true).setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+            // 4. Guardamos en la sesión
+            request.getSession(true).setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
-        return "redirect:/api/home/" + usuario.getId();
+            return "redirect:/api/home/" + usuario.getId();
+
+        } catch (Exception e) {
+            // Si las credenciales son incorrectas (o falla el servicio), redirige al login con el parámetro de error
+            return "redirect:/login?error=true";
+        }
     }
 
 

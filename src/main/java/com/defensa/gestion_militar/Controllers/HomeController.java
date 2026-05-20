@@ -14,6 +14,48 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//@Controller
+//@RequestMapping("/api/home")
+//public class HomeController {
+//
+//    @Autowired
+//    UsuariosService usuariosService;
+//
+//    @Autowired
+//    RealizarServicioService realizarServicioService;
+//
+//    @GetMapping("/{id}")
+//    public String verDatos(@PathVariable Long id, Model model){
+////        Usuario usuarioAdmin=usuariosService.obtenerUsuarioLogueado();
+////       UsuarioDTO usuario= usuariosService.obtenerUserPorId(usuarioAdmin.getId(),id);
+////       List<RealizaServicio> serviciosList=realizarServicioService.obtenerTodosLosServiciosPorId(id);
+//        Usuario usuarioAdmin = usuariosService.obtenerUsuarioLogueado(); //
+//        UsuarioDTO usuario = usuariosService.obtenerUserPorId(usuarioAdmin.getId()); //
+//
+//        // Convertir la lista de RealizaServicio a ServicioHistorialDTO
+//        List<ServicioHistorialDTO> serviciosList = realizarServicioService.obtenerTodosLosServiciosPorId(id)
+//                .stream()
+//                .map(rs -> ServicioHistorialDTO.builder()
+//                        .idRealizaServicio(rs.getId()) // Usando el ID heredado de Identificable
+//                        .nombreServicio(rs.getServicio().getNombre_servicio()) //
+//                        .realizado(rs.isRealizado())
+//                        .fecha(rs.getFechaRealizacion()) //
+//                        .build())
+//                .toList();
+//        model.addAttribute("usuario",usuario);
+//       model.addAttribute("servicios",serviciosList);
+//       return "home";
+//    }
+//    @PostMapping("/servicio/completar/{id}")
+//    public String completarServicio(@PathVariable Long id, @RequestParam Long usuarioId) {
+//        // 1. Llamamos al servicio para cambiar el estado
+//        realizarServicioService.marcarComoRealizado(id);
+//
+//        // 2. Redirigimos a la misma página del usuario para ver los cambios
+//        return "home";
+//    }
+//}
+
 @Controller
 @RequestMapping("/api/home")
 public class HomeController {
@@ -24,28 +66,35 @@ public class HomeController {
     @Autowired
     RealizarServicioService realizarServicioService;
 
+    // --- NUEVO MÉTODO PUENTE ---
+    @GetMapping("")
+    public String redirigirAHome() {
+        // El backend busca al usuario que está logueado en la sesión actual
+        Usuario usuarioAdmin = usuariosService.obtenerUsuarioLogueado();
+
+        // Redirige automáticamente agregando su ID correspondiente en la URL
+        return "redirect:/api/home/" + usuarioAdmin.getId();
+    }
+
     @GetMapping("/{id}")
     public String verDatos(@PathVariable Long id, Model model){
-//        Usuario usuarioAdmin=usuariosService.obtenerUsuarioLogueado();
-//       UsuarioDTO usuario= usuariosService.obtenerUserPorId(usuarioAdmin.getId(),id);
-//       List<RealizaServicio> serviciosList=realizarServicioService.obtenerTodosLosServiciosPorId(id);
-        Usuario usuarioAdmin = usuariosService.obtenerUsuarioLogueado(); //
-        UsuarioDTO usuario = usuariosService.obtenerUserPorId(usuarioAdmin.getId()); //
+        Usuario usuarioAdmin = usuariosService.obtenerUsuarioLogueado();
+        UsuarioDTO usuario = usuariosService.obtenerUserPorId(usuarioAdmin.getId());
 
-        // Convertir la lista de RealizaServicio a ServicioHistorialDTO
         List<ServicioHistorialDTO> serviciosList = realizarServicioService.obtenerTodosLosServiciosPorId(id)
                 .stream()
                 .map(rs -> ServicioHistorialDTO.builder()
-                        .idRealizaServicio(rs.getId()) // Usando el ID heredado de Identificable
-                        .nombreServicio(rs.getServicio().getNombre_servicio()) //
+                        .idRealizaServicio(rs.getId())
+                        .nombreServicio(rs.getServicio().getNombre_servicio())
                         .realizado(rs.isRealizado())
-                        .fecha(rs.getFechaRealizacion()) //
+                        .fecha(rs.getFechaRealizacion())
                         .build())
                 .toList();
-        model.addAttribute("usuario",usuario);
-       model.addAttribute("servicios",serviciosList);
-       return "home";
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("servicios", serviciosList);
+        return "home";
     }
+
     @PostMapping("/servicio/completar/{id}")
     public String completarServicio(@PathVariable Long id, @RequestParam Long usuarioId) {
         // 1. Llamamos al servicio para cambiar el estado
@@ -54,4 +103,5 @@ public class HomeController {
         // 2. Redirigimos a la misma página del usuario para ver los cambios
         return "home";
     }
+
 }

@@ -5,6 +5,7 @@ import com.defensa.gestion_militar.Capacidad.CapacidadGestionCuartel;
 import com.defensa.gestion_militar.Capacidad.CapacidadGestionCuerpo;
 import com.defensa.gestion_militar.Capacidad.CapacidadGestionServicio;
 import com.defensa.gestion_militar.DTOs.AsignacionDTO;
+import com.defensa.gestion_militar.DTOs.AsignacionServicioDTO;
 import com.defensa.gestion_militar.Entity.*;
 import com.defensa.gestion_militar.Repositorios.*;
 import jakarta.transaction.Transactional;
@@ -95,56 +96,116 @@ public class AsignacionService {
         usuario.setCuerpo(cuerpo);
         repoUsuario.save(usuario);
     }
-    public void AsignarServicio(Long idAdmin,Long idUsuario,Long idServicio){
-        Usuario ejecutor = repoUsuario.findById(idAdmin)
-                .orElseThrow(() -> new RuntimeException("Oficial ejecutor no encontrado"));
 
-        // 2. Verificamos si tiene la capacidad de gestionar cuarteles
-        if (ejecutor instanceof CapacidadGestionServicio oficialConMando) {
-
-            Usuario usuario = repoUsuario.findById(idUsuario)
-                    .orElseThrow(() -> new RuntimeException("Usuario a asignar no encontrado"));
-
-            Servicios servicio = repoServicio.findById(idServicio)
-                    .orElseThrow(() -> new RuntimeException("Servicio de destino no encontrado"));
-            // 3. La entidad Oficial valida la orden
-            oficialConMando.asignarServicio(idUsuario, idServicio);
-
-
-
-            String rangoMilitar = "";
-            if (usuario instanceof Oficial) {
-                rangoMilitar = "OFICIAL";
-            } else if (usuario instanceof Suboficial) {
-                rangoMilitar = "SUBOFICIAL";
-            } else if (usuario instanceof Soldado) {
-                rangoMilitar = "SOLDADO";
-            }
-            Integer nivelServicio = servicio.getRango(); // Nivel 1, 2 o 3
-
-            if (rangoMilitar.equals("SOLDADO") && nivelServicio != 1) {
-                throw new RuntimeException("Denegado: Un Soldado solo puede realizar servicios de rango 1.");
-            }
-            if (rangoMilitar.equals("SUBOFICIAL") && nivelServicio != 2) {
-                throw new RuntimeException("Denegado: Un Suboficial solo puede realizar servicios de rango 2.");
-            }
-            if (rangoMilitar.equals("OFICIAL") && nivelServicio != 3) {
-                throw new RuntimeException("Denegado: Un Oficial solo puede realizar servicios de rango 3.");
-            }
-            RealizaServicio realizaServicio=new RealizaServicio();
-            realizaServicio.setUsuario(usuario);
-            realizaServicio.setServicio(servicio);
-            realizaServicio.setFechaRealizacion(LocalDate.now());
-
-            repoRealizarServicio.save(realizaServicio);
-
-        } else {
-            throw new RuntimeException("Acceso Denegado: Tu rango no permite realizar asignaciones de cuartel.");
-
+    @Transactional
+    public void AsignarServicio(AsignacionServicioDTO dto) {
+        // 1. Validar que el DTO no venga nulo
+        if (dto == null) {
+            throw new IllegalArgumentException("Los datos de asignación no pueden ser nulos.");
         }
 
+        // 2. Buscar al Usuario (Soldado/Suboficial) en la base de datos
+        Usuario usuario = repoUsuario.findById(dto.getIdUsuario())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con el ID: " + dto.getIdUsuario()));
 
+        // 3. Buscar el Servicio en la base de datos
+        Servicios servicio = repoServicio.findById(dto.getIdServicio())
+                .orElseThrow(() -> new RuntimeException("Servicio no encontrado con el ID: " + dto.getIdServicio()));
+
+        // 4. Crear la entidad intermedia 'RealizaServicio'
+        RealizaServicio realizaServicio = new RealizaServicio();
+        realizaServicio.setUsuario(usuario);   // Mapea la relación @ManyToOne
+        realizaServicio.setServicio(servicio); // Mapea la relación @ManyToOne
+        realizaServicio.setFechaRealizacion(dto.getFechaRealizacion()); // LocalDate.now() que viene del Controller
+        realizaServicio.setObservaciones(dto.getObservaciones());
+        realizaServicio.setRealizado(false);   // Por defecto se carga como pendiente
+
+        // 5. Guardar el registro en la tabla 'realiza_servicio'
+        repoRealizarServicio.save(realizaServicio);
     }
+
+//    //ORIGINAL-------
+//    public void AsignarServicio(Long idAdmin,Long idUsuario,Long idServicio){
+//        Usuario ejecutor = repoUsuario.findById(idAdmin)
+//                .orElseThrow(() -> new RuntimeException("Oficial ejecutor no encontrado"));
+//
+//        // 2. Verificamos si tiene la capacidad de gestionar cuarteles
+//        if (ejecutor instanceof CapacidadGestionServicio oficialConMando) {
+//
+//            Usuario usuario = repoUsuario.findById(idUsuario)
+//                    .orElseThrow(() -> new RuntimeException("Usuario a asignar no encontrado"));
+//
+//            Servicios servicio = repoServicio.findById(idServicio)
+//                    .orElseThrow(() -> new RuntimeException("Servicio de destino no encontrado"));
+//            // 3. La entidad Oficial valida la orden
+//            oficialConMando.asignarServicio(idUsuario, idServicio);
+//
+//
+//
+//            String rangoMilitar = "";
+//            if (usuario instanceof Oficial) {
+//                rangoMilitar = "OFICIAL";
+//            } else if (usuario instanceof Suboficial) {
+//                rangoMilitar = "SUBOFICIAL";
+//            } else if (usuario instanceof Soldado) {
+//                rangoMilitar = "SOLDADO";
+//            }
+//            Integer nivelServicio = servicio.getRango(); // Nivel 1, 2 o 3
+//
+//            if (rangoMilitar.equals("SOLDADO") && nivelServicio != 1) {
+//                throw new RuntimeException("Denegado: Un Soldado solo puede realizar servicios de rango 1.");
+//            }
+//            if (rangoMilitar.equals("SUBOFICIAL") && nivelServicio != 2) {
+//                throw new RuntimeException("Denegado: Un Suboficial solo puede realizar servicios de rango 2.");
+//            }
+//            if (rangoMilitar.equals("OFICIAL") && nivelServicio != 3) {
+//                throw new RuntimeException("Denegado: Un Oficial solo puede realizar servicios de rango 3.");
+//            }
+//            RealizaServicio realizaServicio=new RealizaServicio();
+//            realizaServicio.setUsuario(usuario);
+//            realizaServicio.setServicio(servicio);
+//            realizaServicio.setFechaRealizacion(LocalDate.now());
+//
+//            repoRealizarServicio.save(realizaServicio);
+//
+//        } else {
+//            throw new RuntimeException("Acceso Denegado: Tu rango no permite realizar asignaciones de cuartel.");
+//
+//        }
+//
+//
+//    }
+//    @Transactional
+//    public void asignarServicio(AsignacionServicioDTO dto) {
+//        // 1. Validar y buscar el Usuario en la Base de Datos
+//        Usuario usuario = repoUsuario.findById(dto.getIdUsuario())
+//                .orElseThrow(() -> new RuntimeException("No se encontró el usuario con ID: " + dto.getIdUsuario()));
+//
+//        // 2. Validar y buscar el Servicio en la Base de Datos
+//        Servicios servicio = repoServicio.findById(dto.getIdServicio())
+//                .orElseThrow(() -> new RuntimeException("No se encontró el servicio con ID: " + dto.getIdServicio()));
+//
+//        // 3. Regla de negocio opcional: Validar rangos o si ya lo tiene asignado el mismo día
+//        // (Puedes agregar lógica aquí si un Soldado no puede hacer servicios de Alto Mando)
+//
+//        // 4. Crear la instancia de la tabla intermedia
+//        RealizaServicio nuevaAsignacion = new RealizaServicio();
+//        nuevaAsignacion.setUsuario(usuario);
+//        nuevaAsignacion.setServicio(servicio);
+//
+//        // Si el DTO no trae fecha, le asignamos la fecha actual por defecto
+//        if (dto.getFechaRealizacion() != null) {
+//            nuevaAsignacion.setFechaRealizacion(dto.getFechaRealizacion());
+//        } else {
+//            nuevaAsignacion.setFechaRealizacion(LocalDate.now());
+//        }
+//
+//        nuevaAsignacion.setObservaciones(dto.getObservaciones());
+//        nuevaAsignacion.setRealizado(false); // Por defecto arranca sin realizar
+//
+//        // 5. Guardar en la base de datos a través del repositorio intermedio
+//        repoRealizarServicio.save(nuevaAsignacion);
+//    }
 
     public void ReasignarCuartel(Long idNuevoCuartel,Long idViejoCuartel){
         Cuartel cuartelDestino=repoCuartel.findById(idNuevoCuartel).orElseThrow(() -> new RuntimeException("Cuartel no encontrado"));

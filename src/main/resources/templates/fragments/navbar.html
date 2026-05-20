@@ -19,7 +19,9 @@
             </div>
 
             <nav class="nav">
+<!--                <a th:href="@{/api/home/{id}(id=${usuario.id})}" class="nav-link">Inicio</a>-->
                 <a th:href="@{/api/home}" class="nav-link">Inicio</a>
+
 
                 <div class="dropdown">
                     <button class="nav-link dropbtn">Cuartel <i data-lucide="chevron-down"></i></button>
@@ -72,7 +74,8 @@
                             <a th:href="@{/api/{path}/agregar/servicio(path=${userPath})}">Agregar</a>
                             <a th:href="@{/api/{path}/eliminar/servicio(path=${userPath})}">Eliminar</a>
                             <a th:href="@{/api/{path}/editar/servicio(path=${userPath})}">Editar</a>
-                            <a th:href="@{/api/oficial/asignar/servicio}">asignar</a>
+                            <a th:href="@{/api/oficial/asignar/servicio}">Asignar Servicio</a>
+<!--                            <a th:href="@{/api/oficial/asignar/servicio}">asignar</a>-->
                         </th:block>
                     </div>
                 </div>
